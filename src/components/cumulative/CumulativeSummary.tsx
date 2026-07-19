@@ -1,0 +1,158 @@
+// ========================================
+// Cumulative Summary Component
+// Displays overall cumulative GWA and Latin Honors status
+// ========================================
+
+import type { LatinHonorsEvaluation } from '../../types';
+import { formatGWA } from '../../utils/bu-computation';
+import { HonorBadge } from '../shared/Badge';
+import { Hash, BookOpen, AlertCircle } from 'lucide-react';
+
+interface CumulativeSummaryProps {
+  evaluation: LatinHonorsEvaluation;
+}
+
+export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
+  const { gwaResult, honor, honorLabel, semesterSummaries } = evaluation;
+
+  if (!gwaResult.isValid && !gwaResult.hasDisqualifyingGrades) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4 animate-slide-down">
+      {/* Main GWA card */}
+      <div className="card">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
+              Cumulative General Weighted Average
+            </p>
+            <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
+              {formatGWA(gwaResult.gwa)}
+            </p>
+          </div>
+          <HonorBadge type={honor} label={honorLabel} size="lg" />
+        </div>
+
+        {/* Quick stats */}
+        <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 flex flex-wrap gap-6">
+          <div className="flex items-center gap-2">
+            <Hash className="w-4 h-4 text-sage-500" />
+            <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
+              <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
+                {gwaResult.totalAcademicUnits}
+              </span>{' '}
+              total units
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-sage-500" />
+            <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
+              <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
+                {semesterSummaries.length}
+              </span>{' '}
+              semester{semesterSummaries.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        </div>
+
+        {/* Disqualification notice */}
+        {gwaResult.hasDisqualifyingGrades && (
+          <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-xs font-semibold text-red-700 dark:text-red-400 mb-1">
+                  Permanently Disqualified from Latin Honors
+                </p>
+                <ul className="space-y-0.5">
+                  {gwaResult.disqualifyingSubjects.map((s) => (
+                    <li
+                      key={s.id}
+                      className="text-xs text-red-600 dark:text-red-400/80"
+                    >
+                      • {s.subjectCode || '(No code)'} — Grade:{' '}
+                      {String(s.grade)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Per-semester summary table */}
+      {semesterSummaries.length > 0 &&
+        semesterSummaries.some((s) => s.subjectCount > 0) && (
+          <div className="card p-0 overflow-hidden">
+            <div className="px-4 py-3 border-b border-charcoal-100 dark:border-charcoal-700">
+              <h4 className="text-xs font-semibold text-charcoal-500 dark:text-charcoal-400 uppercase tracking-wider">
+                Per-Semester Breakdown
+              </h4>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-cream-50 dark:bg-charcoal-700/30 border-b border-charcoal-100 dark:border-charcoal-600">
+                    <th className="px-4 py-2.5 text-2xs font-semibold text-charcoal-400 uppercase tracking-wider text-left">
+                      Semester
+                    </th>
+                    <th className="px-4 py-2.5 text-2xs font-semibold text-charcoal-400 uppercase tracking-wider text-center">
+                      Subjects
+                    </th>
+                    <th className="px-4 py-2.5 text-2xs font-semibold text-charcoal-400 uppercase tracking-wider text-center">
+                      Units
+                    </th>
+                    <th className="px-4 py-2.5 text-2xs font-semibold text-charcoal-400 uppercase tracking-wider text-right">
+                      GWA
+                    </th>
+                    <th className="px-4 py-2.5 text-2xs font-semibold text-charcoal-400 uppercase tracking-wider text-center w-16">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-charcoal-50 dark:divide-charcoal-700">
+                  {semesterSummaries.map((summary) => (
+                    <tr
+                      key={summary.semesterId}
+                      className={`transition-colors ${
+                        summary.hasIssues
+                          ? 'bg-red-50/40 dark:bg-red-900/10'
+                          : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/30'
+                      }`}
+                    >
+                      <td className="px-4 py-2.5 text-sm text-charcoal-600 dark:text-charcoal-300">
+                        {summary.semesterName}
+                      </td>
+                      <td className="px-4 py-2.5 text-sm text-charcoal-500 dark:text-charcoal-400 text-center tabular-nums">
+                        {summary.subjectCount}
+                      </td>
+                      <td className="px-4 py-2.5 text-sm text-charcoal-500 dark:text-charcoal-400 text-center tabular-nums">
+                        {summary.totalUnits}
+                      </td>
+                      <td className="px-4 py-2.5 text-sm font-semibold text-charcoal-700 dark:text-charcoal-200 text-right tabular-nums">
+                        {formatGWA(summary.gwa)}
+                      </td>
+                      <td className="px-4 py-2.5 text-center">
+                        {summary.hasIssues ? (
+                          <span className="text-red-500 text-xs font-semibold">
+                            ⚠
+                          </span>
+                        ) : summary.subjectCount > 0 ? (
+                          <span className="text-sage-500 text-xs">✓</span>
+                        ) : (
+                          <span className="text-charcoal-300 text-xs">—</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+    </div>
+  );
+}
