@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Trophy, Medal, Star, CheckCircle, AlertTriangle } from 'lucide-react';
-import { formatGWA } from '../../utils/bu-computation';
-import type { SemesterSummary } from '../../types';
+import { Trophy, Medal, Star, CheckCircle, AlertTriangle, Minus } from 'lucide-react';
+import { formatGWA, isDisqualifyingGrade } from '../../utils/bu-computation';
+import type { SemesterSummary, Subject, Grade } from '../../types';
 import { useApp } from '../../context/AppContext';
 
 interface ShareableResultCardProps {
@@ -12,6 +12,7 @@ interface ShareableResultCardProps {
   userName: string;
   onNameChange: (name: string) => void;
   semesterSummaries?: SemesterSummary[];
+  subjects?: Subject[];
 }
 
 // ── Honor config helpers ──────────────────────────────────────────────────────
@@ -69,15 +70,17 @@ export function ShareableResultCard({
   userName,
   onNameChange,
   semesterSummaries,
+  subjects,
 }: ShareableResultCardProps) {
   const { rules } = useApp();
   const [isEditing, setIsEditing] = useState(!userName);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [showDetails, setShowDetails] = useState(true);
+  const useRefInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+    if (isEditing && useRefInput.current) {
+      useRefInput.current.focus();
+      useRefInput.current.select();
     }
   }, [isEditing]);
 
@@ -96,6 +99,10 @@ export function ShareableResultCard({
   ) ?? [];
   const hasBreakdown = type === 'latin' && filteredSummaries.length > 0;
 
+  const filteredSubjects = subjects?.filter(
+    (sub) => sub.grade !== ''
+  ) ?? [];
+
   return (
     <div className={`rounded-xl bg-white dark:bg-charcoal-800 shadow-xl border border-charcoal-200 dark:border-charcoal-700 overflow-hidden`}>
 
@@ -106,7 +113,7 @@ export function ShareableResultCard({
         <div className="w-full flex items-center justify-center min-h-[32px] group">
           {isEditing ? (
             <input
-              ref={inputRef}
+              ref={useRefInput}
               type="text"
               value={userName}
               onChange={(e) => onNameChange(e.target.value)}
@@ -127,7 +134,7 @@ export function ShareableResultCard({
             />
           ) : (
             <button
-              className="flex items-center gap-1.5 rounded-lg px-2 py-0.5 -mx-2 hover:bg-charcoal-50 dark:hover:bg-charcoal-700/50 transition-colors"
+              className="flex items-center gap-1.5 rounded-lg px-2 py-0.5 -mx-2 hover:bg-charcoal-50 dark:hover:bg-charcoal-700/50 transition-colors border-b border-dashed border-charcoal-300 dark:border-charcoal-600 pb-0.5"
               onClick={() => setIsEditing(true)}
               title="Click to edit your name"
             >
@@ -164,7 +171,7 @@ export function ShareableResultCard({
         )}
       </div>
 
-      {/* ── Semester Breakdown ───────────────────────── */}
+      {/* ── Semester Breakdown (for type === 'latin') ───────────────────────── */}
       {hasBreakdown && (
         <div className="border-t border-charcoal-100 dark:border-charcoal-700">
           {/* Section header */}
@@ -230,6 +237,73 @@ export function ShareableResultCard({
               );
             })}
           </div>
+        </div>
+      )}
+
+      {/* ── Semester Subjects Breakdown (for type === 'semester') ───────────────────────── */}
+      {type === 'semester' && filteredSubjects.length > 0 && (
+        <div className="border-t border-charcoal-100 dark:border-charcoal-700">
+          {/* Section header */}
+          <div className="px-4 pt-2.5 pb-1.5 flex items-center justify-between">
+            <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-charcoal-400 dark:text-charcoal-500">
+              Subject Grades
+            </span>
+            <button
+              onClick={() => setShowDetails(!showDetails)}
+              className="text-[10px] font-semibold text-forest-700 dark:text-sage-400 hover:text-forest-800 dark:hover:text-sage-300 px-2 py-0.5 rounded bg-charcoal-50 dark:bg-charcoal-700 border border-charcoal-200 dark:border-charcoal-600 transition-colors"
+            >
+              {showDetails ? 'Hide' : 'Show'}
+            </button>
+          </div>
+
+          {/* List */}
+          {showDetails && (
+            <div className="px-2 pb-3 flex flex-col gap-0.5">
+              {filteredSubjects.map((sub, idx) => {
+                const isNSTP = sub.isNstp;
+                const isDisq = sub.grade !== '' && isDisqualifyingGrade(sub.grade as Grade, rules);
+                return (
+                  <div
+                    key={sub.id}
+                    className={`
+                      flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[12px]
+                      ${idx % 2 === 0
+                        ? 'bg-charcoal-50 dark:bg-charcoal-700/20'
+                        : 'bg-white dark:bg-transparent'
+                      }
+                      border border-charcoal-100/50 dark:border-charcoal-700/10
+                    `}
+                  >
+                    {/* Status icon */}
+                    <div className="flex-shrink-0">
+                      {isDisq ? (
+                        <AlertTriangle className="w-2.5 h-2.5 text-red-400" />
+                      ) : isNSTP ? (
+                        <Minus className="w-2.5 h-2.5 text-charcoal-300 dark:text-charcoal-600" />
+                      ) : (
+                        <CheckCircle className="w-2.5 h-2.5 text-sage-500" />
+                      )}
+                    </div>
+
+                    {/* Subject code or title */}
+                    <span className="flex-1 min-w-0 font-medium text-charcoal-700 dark:text-charcoal-200 truncate">
+                      {sub.isNstp ? 'NSTP Subject' : `Subject #${idx + 1}`}
+                    </span>
+
+                    {/* Units */}
+                    <span className="text-2xs text-charcoal-400 dark:text-charcoal-500 mr-2 flex-shrink-0">
+                      {sub.units} unit{sub.units > 1 ? 's' : ''}
+                    </span>
+
+                    {/* Grade */}
+                    <span className={`tabular-nums font-bold flex-shrink-0 ${isDisq ? 'text-red-500' : 'text-charcoal-800 dark:text-charcoal-100'}`}>
+                      {sub.grade}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
 

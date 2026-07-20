@@ -3,7 +3,7 @@
 // Displays the computed GWA and honors status
 // ========================================
 
-import type { SemesterEvaluation } from '../../types';
+import type { SemesterEvaluation, Subject } from '../../types';
 import { formatGWA } from '../../utils/bu-computation';
 import { HonorBadge } from '../shared/Badge';
 import { TrendingUp, Hash, Weight, Maximize2 } from 'lucide-react';
@@ -13,9 +13,10 @@ import { useState } from 'react';
 
 interface GWAResultProps {
   evaluation: SemesterEvaluation;
+  subjects?: Subject[];
 }
 
-export function GWAResult({ evaluation }: GWAResultProps) {
+export function GWAResult({ evaluation, subjects }: GWAResultProps) {
   const { userName, setUserName } = useApp();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { gwaResult, honor, honorLabel } = evaluation;
@@ -195,6 +196,7 @@ export function GWAResult({ evaluation }: GWAResultProps) {
         totalUnits={gwaResult.totalAcademicUnits}
         userName={userName}
         onNameChange={setUserName}
+        subjects={subjects}
       />
     </>
   );

@@ -2,7 +2,7 @@ import { X, Share2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ShareableResultCard } from './ShareableResultCard';
-import type { SemesterSummary } from '../../types';
+import type { SemesterSummary, Subject } from '../../types';
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -14,6 +14,7 @@ interface ShareModalProps {
   userName: string;
   onNameChange: (name: string) => void;
   semesterSummaries?: SemesterSummary[];
+  subjects?: Subject[];
 }
 
 export function ShareModal({
@@ -26,6 +27,7 @@ export function ShareModal({
   userName,
   onNameChange,
   semesterSummaries,
+  subjects,
 }: ShareModalProps) {
   // Lock body scroll and close on Escape
   useEffect(() => {
@@ -84,6 +86,7 @@ export function ShareModal({
             userName={userName}
             onNameChange={onNameChange}
             semesterSummaries={semesterSummaries}
+            subjects={subjects}
           />
         </div>
 

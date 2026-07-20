@@ -70,7 +70,7 @@ export function SemesterCalculator() {
       </div>
 
       {/* GWA Result Card (shown when there's computed data) */}
-      <GWAResult evaluation={evaluation} />
+      <GWAResult evaluation={evaluation} subjects={semesterSubjects} />
 
       {/* Explanation banner for NSTP */}
       <div className="flex items-start gap-3 p-4 bg-sage-50 dark:bg-sage-900/20 border border-sage-200 dark:border-sage-700 rounded-sm">
