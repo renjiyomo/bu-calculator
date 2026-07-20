@@ -35,7 +35,7 @@ export function SubjectRow({
         isDisqualified
           ? 'row-disqualified'
           : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/50'
-      } ${subject.isPeNstp ? 'opacity-60' : ''}`}
+      } ${subject.isNstp ? 'opacity-60' : ''}`}
     >
       {/* Row number */}
       <td className="px-3 py-2.5 text-2xs text-charcoal-300 dark:text-charcoal-500 font-mono w-10 text-center">
@@ -69,19 +69,19 @@ export function SubjectRow({
         />
       </td>
 
-      {/* PE/NSTP Toggle */}
+      {/* NSTP Toggle */}
       <td className="px-3 py-2.5 w-32 text-center">
         <button
-          onClick={() => onUpdate({ isPeNstp: !subject.isPeNstp })}
+          onClick={() => onUpdate({ isNstp: !subject.isNstp })}
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-            subject.isPeNstp
+            subject.isNstp
               ? 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-700'
               : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-200 dark:hover:bg-charcoal-600 border border-transparent'
           }`}
-          title="Toggle whether to exclude this subject (e.g. PE or NSTP)"
+          title="Toggle whether to exclude this NSTP subject"
           type="button"
         >
-          {subject.isPeNstp ? (
+          {subject.isNstp ? (
             <>
               <Check className="w-3.5 h-3.5" />
               Excluded

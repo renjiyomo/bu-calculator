@@ -91,13 +91,13 @@ export function isNumericGrade(grade: Grade | ''): grade is number {
  *   GWA = Σ(Grade × Units) / Σ(Units)
  *
  * Rules:
- * - PE/NSTP subjects are EXCLUDED from computation
+ * - NSTP subjects are EXCLUDED from computation
  * - Only numeric grades (1.0–3.0, 5.0) contribute to weighted sum
  * - INC and DRP do not have a numeric value but flag disqualification
  */
 export function computeGWA(subjects: Subject[], rules: HonorsRules): GWAResult {
-  // Filter out PE/NSTP subjects — they don't count toward GWA
-  const academicSubjects = subjects.filter((s) => !s.isPeNstp && s.grade !== '');
+  // Filter out NSTP subjects — they don't count toward GWA (PE/PATHFIT IS included)
+  const academicSubjects = subjects.filter((s) => !s.isNstp && s.grade !== '');
 
   let totalWeightedGrades = 0;
   let totalAcademicUnits = 0;
@@ -314,7 +314,7 @@ export function evaluateLatinHonorsQuick(
       subjectCode: qs.name,
       units: typeof qs.totalUnits === 'number' ? qs.totalUnits : 0,
       grade: '' as any,
-      isPeNstp: false,
+      isNstp: false,
     })),
   };
 
@@ -390,7 +390,7 @@ export function createEmptySubject(): Subject {
     subjectCode: '',
     units: 3,
     grade: '',
-    isPeNstp: false,
+    isNstp: false,
   };
 }
 

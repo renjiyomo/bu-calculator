@@ -55,7 +55,7 @@ export function QuickEntryTable({
                 <th className="px-4 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-center w-36">
                   <div className="flex flex-col items-center">
                     <span>Academic Units</span>
-                    <span className="font-normal normal-case tracking-normal text-charcoal-300 dark:text-charcoal-500">excluding PE/NSTP</span>
+                    <span className="font-normal normal-case tracking-normal text-charcoal-300 dark:text-charcoal-500">excluding NSTP</span>
                   </div>
                 </th>
                 <th className="px-4 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-center w-48">

@@ -40,7 +40,7 @@ export function SubjectTable({
               </th>
               <th className="px-3 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-center w-32">
                 <div className="flex flex-col items-center">
-                  <span>Exclude (PE/NSTP)</span>
+                  <span>Exclude NSTP</span>
                 </div>
               </th>
               <th className="px-3 py-3 w-12"></th>

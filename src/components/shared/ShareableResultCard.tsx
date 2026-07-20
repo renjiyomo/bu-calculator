@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Trophy, Medal, Star, Pencil, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Trophy, Medal, Star, CheckCircle, AlertTriangle } from 'lucide-react';
 import { formatGWA } from '../../utils/bu-computation';
 import type { SemesterSummary } from '../../types';
 import { useApp } from '../../context/AppContext';
@@ -88,7 +88,7 @@ export function ShareableResultCard({
     }
   };
 
-  const { badge, accent, Icon } = getHonorConfig(honorLabel);
+  const { badge, Icon } = getHonorConfig(honorLabel);
   const title = type === 'semester' ? 'Semester GWA' : 'Cumulative GWA';
 
   const filteredSummaries = semesterSummaries?.filter(

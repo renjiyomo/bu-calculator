@@ -21,7 +21,7 @@ export interface Subject {
   subjectCode: string;
   units: number;
   grade: Grade | '';
-  isPeNstp: boolean;
+  isNstp: boolean;
 }
 
 /** Input mode for cumulative calculator */

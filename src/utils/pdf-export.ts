@@ -78,7 +78,7 @@ export function exportSemesterPDF(
   doc.text('Units', 90, y + 1);
   doc.text('Grade', 115, y + 1);
   doc.text('Rating', 140, y + 1);
-  doc.text('PE/NSTP', 170, y + 1);
+  doc.text('NSTP Subject', 160, y + 1);
   y += 8;
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
 
@@ -106,7 +106,7 @@ export function exportSemesterPDF(
     } else {
       doc.text(getGradeLabel(subject.grade as any), 140, y);
     }
-    doc.text(subject.isPeNstp ? 'Yes' : 'No', 170, y);
+    doc.text(subject.isNstp ? 'Yes' : 'No', 170, y);
     y += 8;
   }
 
@@ -224,7 +224,7 @@ export function exportCumulativePDF(
         }
         doc.setFontSize(8);
         doc.text(
-          `   ${subject.subjectCode || '(No code)'} — ${subject.units}u — ${subject.grade}${subject.isPeNstp ? ' (PE/NSTP)' : ''}`,
+          `   ${subject.subjectCode || '(No code)'} — ${subject.units}u — ${subject.grade}${subject.isNstp ? ' (NSTP)' : ''}`,
           margin + 4,
           y
         );
