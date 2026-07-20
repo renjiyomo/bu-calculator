@@ -6,13 +6,19 @@
 import type { LatinHonorsEvaluation } from '../../types';
 import { formatGWA } from '../../utils/bu-computation';
 import { HonorBadge } from '../shared/Badge';
-import { Hash, BookOpen, AlertCircle } from 'lucide-react';
+import { Hash, BookOpen, AlertCircle, Maximize2 } from 'lucide-react';
+import { ShareModal } from '../shared/ShareModal';
+import { useApp } from '../../context/AppContext';
+import { useState } from 'react';
 
 interface CumulativeSummaryProps {
   evaluation: LatinHonorsEvaluation;
+  isQuickMode: boolean;
 }
 
-export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
+export function CumulativeSummary({ evaluation, isQuickMode }: CumulativeSummaryProps) {
+  const { userName, setUserName } = useApp();
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { gwaResult, honor, honorLabel, semesterSummaries } = evaluation;
 
   if (!gwaResult.isValid && !gwaResult.hasDisqualifyingGrades) {
@@ -20,44 +26,55 @@ export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
   }
 
   return (
-    <div className="space-y-4 animate-slide-down">
-      {/* Main GWA card */}
-      <div className="card">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
-              Cumulative General Weighted Average
-            </p>
-            <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
-              {formatGWA(gwaResult.gwa)}
-            </p>
+    <>
+      <div className="space-y-4 animate-slide-down">
+        {/* Main GWA card */}
+        <div className="card">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
+                Cumulative General Weighted Average
+              </p>
+              <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
+                {formatGWA(gwaResult.gwa)}
+              </p>
+            </div>
+            {/* Honor Badge and Share Button */}
+            <div className="flex items-center gap-3">
+              <HonorBadge type={honor} label={honorLabel} size="lg" />
+              <button
+                onClick={() => setIsShareModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-charcoal-50 dark:bg-charcoal-800 text-charcoal-600 dark:text-charcoal-300 hover:bg-charcoal-100 dark:hover:bg-charcoal-700 transition-colors text-xs font-semibold border border-charcoal-200 dark:border-charcoal-700"
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                View Details
+              </button>
+            </div>
           </div>
-          <HonorBadge type={honor} label={honorLabel} size="lg" />
-        </div>
 
-        {/* Quick stats */}
-        <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 flex flex-wrap gap-6">
-          <div className="flex items-center gap-2">
-            <Hash className="w-4 h-4 text-sage-500" />
-            <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
-              <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
-                {gwaResult.totalAcademicUnits}
-              </span>{' '}
-              total units
-            </span>
+          {/* Quick stats */}
+          <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 flex flex-wrap gap-6">
+            <div className="flex items-center gap-2">
+              <Hash className="w-4 h-4 text-sage-500" />
+              <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
+                <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
+                  {gwaResult.totalAcademicUnits}
+                </span>{' '}
+                total units
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-sage-500" />
+              <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
+                <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
+                  {semesterSummaries.length}
+                </span>{' '}
+                semester{semesterSummaries.length !== 1 ? 's' : ''}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-sage-500" />
-            <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
-              <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
-                {semesterSummaries.length}
-              </span>{' '}
-              semester{semesterSummaries.length !== 1 ? 's' : ''}
-            </span>
-          </div>
-        </div>
 
-        {/* Disqualification notice */}
+      {/* Disqualification notice */}
         {gwaResult.hasDisqualifyingGrades && (
           <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm">
             <div className="flex items-start gap-2">
@@ -153,6 +170,19 @@ export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
             </div>
           </div>
         )}
-    </div>
+      </div>
+
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        type="latin"
+        gwa={gwaResult.gwa}
+        honorLabel={honorLabel}
+        totalUnits={gwaResult.totalAcademicUnits}
+        userName={userName}
+        onNameChange={setUserName}
+        semesterSummaries={semesterSummaries}
+      />
+    </>
   );
 }

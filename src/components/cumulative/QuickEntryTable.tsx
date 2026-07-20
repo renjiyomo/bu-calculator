@@ -4,7 +4,7 @@
 // For students who already know their per-semester GWA
 // ========================================
 
-import { Plus, Trash2, Info, AlertTriangle } from 'lucide-react';
+import { Plus, Trash2, Info, AlertTriangle, Check, X } from 'lucide-react';
 import type { QuickSemester } from '../../types';
 
 interface QuickEntryTableProps {
@@ -60,8 +60,8 @@ export function QuickEntryTable({
                 </th>
                 <th className="px-4 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-center w-48">
                   <div className="flex flex-col items-center">
-                    <span>Any 5.0 / INC / DRP?</span>
-                    <span className="font-normal normal-case tracking-normal text-charcoal-300 dark:text-charcoal-500">disqualifies from honors</span>
+                    <span>Disqualifying Grade?</span>
+                    <span className="font-normal normal-case tracking-normal text-charcoal-300 dark:text-charcoal-500">e.g., 5.0, INC, DRP</span>
                   </div>
                 </th>
                 <th className="px-4 py-3 w-12"></th>
@@ -126,28 +126,33 @@ export function QuickEntryTable({
                   </td>
 
                   {/* Disqualifying grade flag */}
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-center gap-2">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={qs.hasDisqualifyingGrade}
-                          onChange={(e) =>
-                            onUpdate(qs.id, {
-                              hasDisqualifyingGrade: e.target.checked,
-                            })
-                          }
-                          className="sr-only peer"
-                        />
-                        <div className="w-8 h-4.5 bg-charcoal-200 dark:bg-charcoal-600 peer-focus:ring-2 peer-focus:ring-sage-500/20 rounded-sm peer peer-checked:after:translate-x-full peer-checked:bg-red-500 dark:peer-checked:bg-red-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-sm after:h-3.5 after:w-3.5 after:transition-all"></div>
-                      </label>
-                      {qs.hasDisqualifyingGrade && (
-                        <span className="inline-flex items-center gap-1 text-2xs font-semibold text-red-600 dark:text-red-400">
-                          <AlertTriangle className="w-3 h-3" />
+                  <td className="px-4 py-3 text-center">
+                    <button
+                      onClick={() =>
+                        onUpdate(qs.id, {
+                          hasDisqualifyingGrade: !qs.hasDisqualifyingGrade,
+                        })
+                      }
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                        qs.hasDisqualifyingGrade
+                          ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
+                          : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-200 dark:hover:bg-charcoal-600 border border-transparent'
+                      }`}
+                      title="Toggle if you received a disqualifying grade (5.0, INC, DRP) this semester"
+                      type="button"
+                    >
+                      {qs.hasDisqualifyingGrade ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" />
                           Yes
-                        </span>
+                        </>
+                      ) : (
+                        <>
+                          <X className="w-3.5 h-3.5" />
+                          No
+                        </>
                       )}
-                    </div>
+                    </button>
                   </td>
 
                   {/* Remove */}

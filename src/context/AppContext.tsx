@@ -27,6 +27,8 @@ import {
   loadActiveView,
   saveActiveView,
   isUsingCustomRules,
+  loadUserName,
+  saveUserName,
 } from '../utils/storage';
 import {
   createEmptySubject,
@@ -39,6 +41,10 @@ interface AppContextValue {
   // Navigation
   activeView: View;
   setActiveView: (view: View) => void;
+
+  // User Profile
+  userName: string;
+  setUserName: (name: string) => void;
 
   // Tool A: Semester subjects
   semesterSubjects: Subject[];
@@ -98,6 +104,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     loadCumulativeMode()
   );
   const [rules, setRulesState] = useState<HonorsRules>(() => loadRules());
+  const [userName, setUserNameState] = useState<string>(() => loadUserName());
 
   // ---- Persist on every change ----
   useEffect(() => {
@@ -124,9 +131,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     saveActiveView(activeView);
   }, [activeView]);
 
+  useEffect(() => {
+    saveUserName(userName);
+  }, [userName]);
+
   // ---- Navigation ----
   const setActiveView = useCallback((view: View) => {
     setActiveViewState(view);
+  }, []);
+
+  // ---- User Profile ----
+  const setUserName = useCallback((name: string) => {
+    setUserNameState(name);
   }, []);
 
   // ---- Tool A: Semester subjects ----
@@ -293,6 +309,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       value={{
         activeView,
         setActiveView,
+        userName,
+        setUserName,
         semesterSubjects,
         setSemesterSubjects,
         addSemesterSubject,

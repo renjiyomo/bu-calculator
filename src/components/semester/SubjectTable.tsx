@@ -3,7 +3,7 @@
 // Table of subject rows with header
 // ========================================
 
-import { Plus, Info } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import type { Subject, HonorsRules } from '../../types';
 import { SubjectRow } from './SubjectRow';
 
@@ -23,22 +23,8 @@ export function SubjectTable({
   onAdd,
 }: SubjectTableProps) {
   return (
-    <div className="space-y-4">
-      {/* Explanation banner for PE/NSTP */}
-      <div className="flex items-start gap-3 p-4 bg-sage-50 dark:bg-sage-900/20 border border-sage-200 dark:border-sage-700 rounded-sm">
-        <Info className="w-4 h-4 text-sage-600 dark:text-sage-400 mt-0.5 flex-shrink-0" />
-        <div>
-          <p className="text-sm font-medium text-sage-800 dark:text-sage-300">
-            About PE and NSTP Subjects
-          </p>
-          <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-            According to the BU Handbook, grades in Physical Education (PE) and National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Toggle the switch on for these subjects to exclude them.
-          </p>
-        </div>
-      </div>
-
-      <div className="card p-0 overflow-hidden">
-        <div className="overflow-x-auto">
+    <div className="card p-0 overflow-hidden">
+      <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-charcoal-100 dark:border-charcoal-600 bg-cream-100 dark:bg-charcoal-700/50">
@@ -86,7 +72,6 @@ export function SubjectTable({
           <Plus className="w-4 h-4" />
           Add subject
         </button>
-      </div>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@
 // ========================================
 
 import { useMemo } from 'react';
-import { Plus, RotateCcw, Download, Zap, List } from 'lucide-react';
+import { Plus, RotateCcw, Download, Zap, List, Info } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { evaluateLatinHonors, evaluateLatinHonorsQuick } from '../../utils/bu-computation';
 import { exportCumulativePDF } from '../../utils/pdf-export';
@@ -38,6 +38,8 @@ export function CumulativeCalculator() {
     clearQuickSemesters,
     // Rules
     rules,
+    // User Profile
+    userName,
   } = useApp();
 
   const isQuickMode = cumulativeInputMode === 'quick';
@@ -81,7 +83,7 @@ export function CumulativeCalculator() {
               {!isQuickMode && (
                 <button
                   onClick={() =>
-                    exportCumulativePDF(semesters, evaluation, rules)
+                    exportCumulativePDF(semesters, evaluation, rules, userName)
                   }
                   className="btn-secondary text-xs"
                   id="export-cumulative-pdf"
@@ -158,6 +160,19 @@ export function CumulativeCalculator() {
       ) : (
         /* ---- Detailed Mode ---- */
         <>
+          {/* Explanation banner for PE/NSTP */}
+          <div className="flex items-start gap-3 p-4 bg-sage-50 dark:bg-sage-900/20 border border-sage-200 dark:border-sage-700 rounded-sm mb-4">
+            <Info className="w-4 h-4 text-sage-600 dark:text-sage-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-sage-800 dark:text-sage-300">
+                About PE and NSTP Subjects
+              </p>
+              <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
+                According to the BU Handbook, grades in Physical Education (PE) and National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Toggle the switch on for these subjects to exclude them.
+              </p>
+            </div>
+          </div>
+          
           <div className="space-y-3">
             {semesters.map((semester) => (
               <SemesterAccordion

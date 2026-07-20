@@ -4,7 +4,7 @@
 // ========================================
 
 import { useMemo } from 'react';
-import { RotateCcw, Download } from 'lucide-react';
+import { RotateCcw, Download, Info } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { evaluateSemesterHonors } from '../../utils/bu-computation';
 import { exportSemesterPDF } from '../../utils/pdf-export';
@@ -19,6 +19,7 @@ export function SemesterCalculator() {
     updateSemesterSubject,
     clearSemesterSubjects,
     rules,
+    userName,
   } = useApp();
 
   // Compute GWA and evaluate honors reactively
@@ -47,7 +48,7 @@ export function SemesterCalculator() {
             <>
               <button
                 onClick={() =>
-                  exportSemesterPDF(semesterSubjects, evaluation)
+                  exportSemesterPDF(semesterSubjects, evaluation, userName)
                 }
                 className="btn-secondary text-xs"
                 id="export-semester-pdf"
@@ -70,6 +71,19 @@ export function SemesterCalculator() {
 
       {/* GWA Result Card (shown when there's computed data) */}
       <GWAResult evaluation={evaluation} />
+
+      {/* Explanation banner for PE/NSTP */}
+      <div className="flex items-start gap-3 p-4 bg-sage-50 dark:bg-sage-900/20 border border-sage-200 dark:border-sage-700 rounded-sm">
+        <Info className="w-4 h-4 text-sage-600 dark:text-sage-400 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-medium text-sage-800 dark:text-sage-300">
+            About PE and NSTP Subjects
+          </p>
+          <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
+            According to the BU Handbook, grades in Physical Education (PE) and National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Toggle the switch on for these subjects to exclude them.
+          </p>
+        </div>
+      </div>
 
       {/* Subject Input Table */}
       <SubjectTable

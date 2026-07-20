@@ -14,6 +14,7 @@ const STORAGE_KEYS = {
   RULES: 'bu-calc-rules',
   ACTIVE_VIEW: 'bu-calc-active-view',
   THEME: 'bu-calc-theme',
+  USER_NAME: 'bu-calc-user-name',
 } as const;
 
 // ----------------------------------------
@@ -127,6 +128,18 @@ export function loadTheme(): 'light' | 'dark' {
 
 export function saveTheme(theme: 'light' | 'dark'): void {
   safeSetItem(STORAGE_KEYS.THEME, theme);
+}
+
+// ----------------------------------------
+// User Profile
+// ----------------------------------------
+
+export function loadUserName(): string {
+  return safeGetItem<string>(STORAGE_KEYS.USER_NAME, '');
+}
+
+export function saveUserName(name: string): void {
+  safeSetItem(STORAGE_KEYS.USER_NAME, name);
 }
 
 /**
