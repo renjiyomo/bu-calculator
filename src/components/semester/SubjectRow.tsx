@@ -3,7 +3,7 @@
 // A single subject input row with all fields
 // ========================================
 
-import { Trash2 } from 'lucide-react';
+import { Trash2, Check, X } from 'lucide-react';
 import type { Subject, Grade, HonorsRules } from '../../types';
 import { GradeSelect } from '../shared/GradeSelect';
 import { isDisqualifyingGrade } from '../../utils/bu-computation';
@@ -42,17 +42,7 @@ export function SubjectRow({
         {index + 1}
       </td>
 
-      {/* Subject Code */}
-      <td className="px-3 py-2.5">
-        <input
-          type="text"
-          placeholder="e.g. CS 101"
-          value={subject.subjectCode}
-          onChange={(e) => onUpdate({ subjectCode: e.target.value })}
-          className="input-field text-sm"
-          id={`subject-code-${subject.id}`}
-        />
-      </td>
+
 
       {/* Units */}
       <td className="px-3 py-2.5 w-24">
@@ -81,22 +71,28 @@ export function SubjectRow({
 
       {/* PE/NSTP Toggle */}
       <td className="px-3 py-2.5 w-32 text-center">
-        <label
-          className="relative inline-flex items-center cursor-pointer group/toggle"
-          title="Exclude this subject from GWA computation (for PE and NSTP)"
+        <button
+          onClick={() => onUpdate({ isPeNstp: !subject.isPeNstp })}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+            subject.isPeNstp
+              ? 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-700'
+              : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-200 dark:hover:bg-charcoal-600 border border-transparent'
+          }`}
+          title="Toggle whether to exclude this subject (e.g. PE or NSTP)"
+          type="button"
         >
-          <input
-            type="checkbox"
-            checked={subject.isPeNstp}
-            onChange={(e) => onUpdate({ isPeNstp: e.target.checked })}
-            className="sr-only peer"
-            id={`pe-nstp-${subject.id}`}
-          />
-          <div className="w-8 h-4.5 bg-charcoal-200 dark:bg-charcoal-600 peer-focus:ring-2 peer-focus:ring-sage-500/20 rounded-sm peer peer-checked:after:translate-x-full peer-checked:bg-sage-500 dark:peer-checked:bg-sage-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-sm after:h-3.5 after:w-3.5 after:transition-all"></div>
-          <span className="ml-2 text-2xs font-medium text-charcoal-400 dark:text-charcoal-500 group-hover/toggle:text-charcoal-600 dark:group-hover/toggle:text-charcoal-300">
-            {subject.isPeNstp ? 'Excluded' : 'Included'}
-          </span>
-        </label>
+          {subject.isPeNstp ? (
+            <>
+              <Check className="w-3.5 h-3.5" />
+              Excluded
+            </>
+          ) : (
+            <>
+              <X className="w-3.5 h-3.5" />
+              Included
+            </>
+          )}
+        </button>
       </td>
 
       {/* Remove */}

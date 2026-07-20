@@ -45,9 +45,7 @@ export function SubjectTable({
               <th className="px-3 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider w-10 text-center">
                 #
               </th>
-              <th className="px-3 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-left">
-                Subject Code
-              </th>
+
               <th className="px-3 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-center w-24">
                 Units
               </th>
