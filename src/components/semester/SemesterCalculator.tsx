@@ -38,7 +38,7 @@ export function SemesterCalculator() {
           <h2 className="text-xl font-bold text-charcoal-700 dark:text-charcoal-100">
             Semester Honors Calculator
           </h2>
-          <p className="text-sm text-charcoal-400 dark:text-charcoal-500 mt-1">
+          <p className="text-xs text-charcoal-400 dark:text-charcoal-500 mt-1">
             Compute your semester GWA and check eligibility for Dean's or
             President's List.
           </p>
@@ -80,7 +80,7 @@ export function SemesterCalculator() {
             About NSTP Subjects
           </p>
           <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-            According to the BU Handbook, grades in the National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Note that Physical Education (PE / PATHFIT) <strong>is included</strong> in the GWA. Toggle the switch on for NSTP subjects to exclude them.
+            National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Note that Physical Education (PE / PATHFIT) <strong>is included</strong> in the GWA. Toggle the button for NSTP subjects to exclude them.
           </p>
         </div>
       </div>

@@ -33,9 +33,9 @@ const styleMap: Record<string, string> = {
 };
 
 const sizeMap = {
-  sm: 'text-[10px] px-1.5 py-0.5 whitespace-nowrap flex-shrink-0',
-  md: 'text-2xs sm:text-xs px-2.5 py-1 whitespace-nowrap flex-shrink-0',
-  lg: 'text-xs sm:text-sm px-3 py-1.5 whitespace-nowrap flex-shrink-0',
+  sm: 'text-2xs px-2 py-0.5 whitespace-nowrap flex-shrink-0',
+  md: 'text-xs sm:text-sm px-2.5 py-1.5 whitespace-nowrap flex-shrink-0',
+  lg: 'text-sm sm:text-base px-3.5 py-2 whitespace-nowrap flex-shrink-0',
 };
 
 export function HonorBadge({ type, label, size = 'md' }: HonorBadgeProps) {

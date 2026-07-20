@@ -72,7 +72,7 @@ export function CumulativeCalculator() {
           <h2 className="text-xl font-bold text-charcoal-700 dark:text-charcoal-100">
             Latin Honors Calculator
           </h2>
-          <p className="text-sm text-charcoal-400 dark:text-charcoal-500 mt-1">
+          <p className="text-xs text-charcoal-400 dark:text-charcoal-500 mt-1">
             Compute your cumulative GWA across all semesters for graduation
             honors eligibility.
           </p>

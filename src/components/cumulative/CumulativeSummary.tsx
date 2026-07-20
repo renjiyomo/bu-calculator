@@ -32,17 +32,17 @@ export function CumulativeSummary({ evaluation, isQuickMode }: CumulativeSummary
         <div className="card">
           {/* Mobile Layout (hidden on sm+) */}
           <div className="flex flex-col gap-5 sm:hidden">
-            <div className="flex items-start justify-between gap-4 w-full">
-              <div>
-                <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
-                  Cumulative General Weighted Average
-                </p>
-                <p className="text-3xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
+            <div>
+              <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-2">
+                Cumulative General Weighted Average
+              </p>
+              <div className="flex items-center justify-between gap-4 w-full">
+                <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
                   {formatGWA(gwaResult.gwa)}
                 </p>
-              </div>
-              <div className="pt-1 flex-shrink-0">
-                <HonorBadge type={honor} label={honorLabel} size="md" />
+                <div className="flex-shrink-0">
+                  <HonorBadge type={honor} label={honorLabel} size="md" />
+                </div>
               </div>
             </div>
             
@@ -51,7 +51,7 @@ export function CumulativeSummary({ evaluation, isQuickMode }: CumulativeSummary
               className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-charcoal-800 dark:bg-charcoal-100 text-white dark:text-charcoal-900 hover:bg-charcoal-700 dark:hover:bg-white transition-colors text-sm font-semibold shadow-sm"
             >
               <Maximize2 className="w-4 h-4" />
-              View Details & Share
+              View Details
             </button>
           </div>
 

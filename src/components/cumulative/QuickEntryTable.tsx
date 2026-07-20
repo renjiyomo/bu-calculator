@@ -30,9 +30,8 @@ export function QuickEntryTable({
             Quick Entry Mode
           </p>
           <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-            Enter your <strong>semester GWA</strong> and <strong>total academic units</strong> directly
-            from your Report of Grades (ROG) or transcript. This is faster than entering every subject
-            individually. You can find your semester GWA on your official grade report from the Registrar.
+            Enter your <strong>semester GWA</strong> and <strong>total academic units</strong> This is faster than entering every subject
+            individually if you already know your GWA per semester.
           </p>
         </div>
       </div>
