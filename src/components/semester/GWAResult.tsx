@@ -27,19 +27,41 @@ export function GWAResult({ evaluation }: GWAResultProps) {
   return (
     <>
       <div className="card animate-slide-down relative">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* GWA Display */}
-          <div className="flex items-center gap-6">
+        {/* Mobile Layout (hidden on sm+) */}
+        <div className="flex flex-col gap-5 sm:hidden">
+          <div className="flex items-start justify-between gap-4 w-full">
             <div>
               <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
                 General Weighted Average
               </p>
-              <p className="text-3xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
+              <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
                 {formatGWA(gwaResult.gwa)}
               </p>
             </div>
+            <div className="pt-1 flex-shrink-0">
+              <HonorBadge type={honor} label={honorLabel} size="md" />
+            </div>
           </div>
+          
+          <button
+            onClick={() => setIsShareModalOpen(true)}
+            className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-charcoal-800 dark:bg-charcoal-100 text-white dark:text-charcoal-900 hover:bg-charcoal-700 dark:hover:bg-white transition-colors text-sm font-semibold shadow-sm"
+          >
+            <Maximize2 className="w-4 h-4" />
+            View Details & Share
+          </button>
+        </div>
 
+        {/* Desktop/Web Layout (hidden on mobile) */}
+        <div className="hidden sm:flex sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider mb-1">
+              General Weighted Average
+            </p>
+            <p className="text-4xl font-bold text-charcoal-700 dark:text-charcoal-100 tabular-nums tracking-tight">
+              {formatGWA(gwaResult.gwa)}
+            </p>
+          </div>
           {/* Honor Badge and Share Button */}
           <div className="flex items-center gap-3">
             <HonorBadge type={honor} label={honorLabel} size="md" />
@@ -53,8 +75,53 @@ export function GWAResult({ evaluation }: GWAResultProps) {
           </div>
         </div>
 
-        {/* Stats row */}
-        <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 grid grid-cols-3 gap-4">
+        {/* Stats row (Mobile) */}
+        <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 flex flex-col gap-4 sm:hidden">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-sm bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
+              <Hash className="w-4 h-4 text-sage-600 dark:text-sage-400" />
+            </div>
+            <div>
+              <p className="text-xs text-charcoal-400 dark:text-charcoal-500">
+                Academic Units
+              </p>
+              <p className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-200 tabular-nums">
+                {gwaResult.totalAcademicUnits}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-sm bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
+              <Weight className="w-4 h-4 text-sage-600 dark:text-sage-400" />
+            </div>
+            <div>
+              <p className="text-xs text-charcoal-400 dark:text-charcoal-500">
+                Weighted Grades
+              </p>
+              <p className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-200 tabular-nums">
+                {gwaResult.totalWeightedGrades.toFixed(1)}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-sm bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
+              <TrendingUp className="w-4 h-4 text-sage-600 dark:text-sage-400" />
+            </div>
+            <div>
+              <p className="text-xs text-charcoal-400 dark:text-charcoal-500">
+                Computation
+              </p>
+              <p className="text-xs font-medium text-charcoal-500 dark:text-charcoal-400 tabular-nums">
+                {gwaResult.totalWeightedGrades.toFixed(1)} ÷ {gwaResult.totalAcademicUnits}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats row (Desktop/Web) */}
+        <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 hidden sm:grid sm:grid-cols-3 gap-4">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-sm bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
               <Hash className="w-4 h-4 text-sage-600 dark:text-sage-400" />

@@ -31,21 +31,50 @@ export function SubjectRow({
 
   return (
     <tr
-      className={`group transition-colors duration-150 ${
+      className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-3.5 sm:p-0 mb-3 sm:mb-0 rounded-xl sm:rounded-none border border-charcoal-200 dark:border-charcoal-700/50 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-2xs sm:shadow-none gap-x-2 gap-y-1.5 sm:gap-0 ${
         isDisqualified
           ? 'row-disqualified'
           : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/50'
       } ${subject.isNstp ? 'opacity-60' : ''}`}
     >
-      {/* Row number */}
-      <td className="px-3 py-2.5 text-2xs text-charcoal-300 dark:text-charcoal-500 font-mono w-10 text-center">
-        {index + 1}
+      {/* Row Header / Delete (Mobile) or Row Number (Desktop) */}
+      <td className="col-span-2 sm:table-cell px-0 sm:px-3 py-1 sm:py-2.5 flex sm:table-cell justify-between items-center sm:text-center w-full sm:w-10 border-b border-charcoal-100 dark:border-charcoal-700/50 sm:border-0 pb-2 sm:pb-2.5">
+        <span className="sm:hidden text-xs font-mono font-bold text-charcoal-500 dark:text-charcoal-400">Subject #{index + 1}</span>
+        
+        {/* Mobile controls: Exclude NSTP toggle + Delete Button */}
+        <div className="flex items-center gap-3 sm:hidden">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Exclude NSTP</span>
+            <button
+              onClick={() => onUpdate({ isNstp: !subject.isNstp })}
+              className={`inline-flex items-center justify-center px-2 py-1 rounded text-2xs font-semibold transition-all ${
+                subject.isNstp
+                  ? 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-700'
+                  : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 border border-transparent'
+              }`}
+              title="Toggle whether to exclude this NSTP subject"
+              type="button"
+            >
+              {subject.isNstp ? 'Yes' : 'No'}
+            </button>
+          </div>
+          {showRemove && (
+            <button
+              onClick={onRemove}
+              className="text-red-500 hover:text-red-600 p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all"
+              aria-label="Remove subject"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+        
+        <span className="hidden sm:inline text-2xs text-charcoal-300 dark:text-charcoal-500 font-mono">{index + 1}</span>
       </td>
 
-
-
       {/* Units */}
-      <td className="px-3 py-2.5 w-24">
+      <td className="col-span-1 sm:table-cell px-0 sm:px-3 py-1 sm:py-2.5 flex flex-col sm:table-cell justify-between items-start sm:items-center w-full sm:w-24 gap-1 sm:gap-0">
+        <span className="sm:hidden text-[9px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Units</span>
         <input
           type="number"
           min={1}
@@ -54,49 +83,42 @@ export function SubjectRow({
           onChange={(e) =>
             onUpdate({ units: Math.max(1, parseInt(e.target.value) || 1) })
           }
-          className="input-field text-sm text-center"
+          className="input-field text-sm text-center w-full"
           id={`units-${subject.id}`}
         />
       </td>
 
       {/* Grade */}
-      <td className="px-3 py-2.5 w-48">
-        <GradeSelect
-          value={subject.grade}
-          onChange={(grade) => onUpdate({ grade })}
-          isDisqualified={isDisqualified}
-          id={`grade-${subject.id}`}
-        />
+      <td className="col-span-1 sm:table-cell px-0 sm:px-3 py-1 sm:py-2.5 flex flex-col sm:table-cell justify-between items-start sm:items-center w-full sm:w-48 gap-1 sm:gap-0">
+        <span className="sm:hidden text-[9px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Grade</span>
+        <div className="w-full">
+          <GradeSelect
+            value={subject.grade}
+            onChange={(grade) => onUpdate({ grade })}
+            isDisqualified={isDisqualified}
+            id={`grade-${subject.id}`}
+          />
+        </div>
       </td>
 
-      {/* NSTP Toggle */}
-      <td className="px-3 py-2.5 w-32 text-center">
+      {/* NSTP Toggle (Desktop only) */}
+      <td className="hidden sm:table-cell px-3 py-2.5 w-32 text-center">
         <button
           onClick={() => onUpdate({ isNstp: !subject.isNstp })}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+          className={`inline-flex items-center justify-center px-2.5 py-1.5 rounded-lg text-xs font-semibold sm:font-medium transition-all ${
             subject.isNstp
               ? 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-700'
-              : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-200 dark:hover:bg-charcoal-600 border border-transparent'
+              : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 border border-transparent'
           }`}
           title="Toggle whether to exclude this NSTP subject"
           type="button"
         >
-          {subject.isNstp ? (
-            <>
-              <Check className="w-3.5 h-3.5" />
-              Excluded
-            </>
-          ) : (
-            <>
-              <X className="w-3.5 h-3.5" />
-              Included
-            </>
-          )}
+          {subject.isNstp ? 'Yes' : 'No'}
         </button>
       </td>
 
-      {/* Remove */}
-      <td className="px-3 py-2.5 w-12 text-center">
+      {/* Remove (Desktop only) */}
+      <td className="hidden sm:table-cell px-3 py-2.5 w-12 text-center">
         {showRemove && (
           <button
             onClick={onRemove}

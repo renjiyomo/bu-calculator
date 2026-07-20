@@ -38,10 +38,10 @@ export function QuickEntryTable({
       </div>
 
       {/* Quick entry cards */}
-      <div className="card p-0 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
+      <div className="card p-0 overflow-hidden border-0 sm:border border-charcoal-200 dark:border-charcoal-700 bg-transparent sm:bg-white dark:sm:bg-charcoal-800 shadow-none sm:shadow-sm">
+        <div className="overflow-x-auto sm:overflow-visible">
+          <table className="w-full block sm:table">
+            <thead className="hidden sm:table-header-group">
               <tr className="border-b border-charcoal-100 dark:border-charcoal-600 bg-cream-100 dark:bg-charcoal-700/50">
                 <th className="px-4 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider text-left">
                   Semester
@@ -67,29 +67,63 @@ export function QuickEntryTable({
                 <th className="px-4 py-3 w-12"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-charcoal-50 dark:divide-charcoal-700">
+            <tbody className="divide-y divide-charcoal-50 dark:divide-charcoal-700 block sm:table-row-group space-y-3 sm:space-y-0 p-3 sm:p-0">
               {quickSemesters.map((qs) => (
                 <tr
                   key={qs.id}
-                  className={`group transition-colors duration-150 ${
+                  className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-3.5 sm:p-0 mb-3 sm:mb-0 rounded-xl sm:rounded-none border border-charcoal-200 dark:border-charcoal-700/50 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-2xs sm:shadow-none gap-x-2 gap-y-1.5 sm:gap-0 ${
                     qs.hasDisqualifyingGrade
                       ? 'row-disqualified'
                       : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/50'
                   }`}
                 >
-                  {/* Semester name */}
-                  <td className="px-4 py-3">
+                  {/* Semester name / Remove (Mobile Header) */}
+                  <td className="col-span-2 sm:table-cell px-0 sm:px-4 py-1 sm:py-3 flex flex-col sm:table-cell border-b border-charcoal-100 dark:border-charcoal-700/50 sm:border-0 pb-2 sm:pb-3">
+                    <div className="flex justify-between items-center w-full mb-1.5 sm:hidden">
+                      <span className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Semester</span>
+                      
+                      <div className="flex items-center gap-3 sm:hidden">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Disq?</span>
+                          <button
+                            onClick={() =>
+                              onUpdate(qs.id, {
+                                hasDisqualifyingGrade: !qs.hasDisqualifyingGrade,
+                              })
+                            }
+                            className={`inline-flex items-center justify-center px-2 py-1 rounded text-2xs font-semibold transition-all ${
+                              qs.hasDisqualifyingGrade
+                                ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
+                                : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 border border-transparent'
+                            }`}
+                            type="button"
+                          >
+                            {qs.hasDisqualifyingGrade ? 'Yes' : 'No'}
+                          </button>
+                        </div>
+                        {quickSemesters.length > 1 && (
+                          <button
+                            onClick={() => onRemove(qs.id)}
+                            className="text-red-500 hover:text-red-600 p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all"
+                            aria-label="Remove semester"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                     <input
                       type="text"
                       value={qs.name}
                       onChange={(e) => onUpdate(qs.id, { name: e.target.value })}
-                      className="input-field text-sm"
+                      className="input-field text-sm w-full"
                       placeholder="e.g. Year 1 — Semester 1"
                     />
                   </td>
 
                   {/* GWA */}
-                  <td className="px-4 py-3">
+                  <td className="col-span-1 sm:table-cell px-0 sm:px-4 py-1 sm:py-3 flex flex-col sm:table-cell justify-between items-start sm:items-center w-full sm:w-36 gap-1 sm:gap-0">
+                    <span className="sm:hidden text-[9px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">GWA</span>
                     <input
                       type="number"
                       step="0.0001"
@@ -102,13 +136,14 @@ export function QuickEntryTable({
                           gwa: val === '' ? '' : parseFloat(val),
                         });
                       }}
-                      className="input-field text-sm text-center tabular-nums"
-                      placeholder="e.g. 1.4500"
+                      className="input-field text-sm text-center tabular-nums w-full"
+                      placeholder="GWA"
                     />
                   </td>
 
                   {/* Total Units */}
-                  <td className="px-4 py-3">
+                  <td className="col-span-1 sm:table-cell px-0 sm:px-4 py-1 sm:py-3 flex flex-col sm:table-cell justify-between items-start sm:items-center w-full sm:w-36 gap-1 sm:gap-0">
+                    <span className="sm:hidden text-[9px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Units</span>
                     <input
                       type="number"
                       min="1"
@@ -120,13 +155,13 @@ export function QuickEntryTable({
                           totalUnits: val === '' ? '' : parseInt(val) || '',
                         });
                       }}
-                      className="input-field text-sm text-center tabular-nums"
-                      placeholder="e.g. 21"
+                      className="input-field text-sm text-center tabular-nums w-full"
+                      placeholder="Units"
                     />
                   </td>
 
-                  {/* Disqualifying grade flag */}
-                  <td className="px-4 py-3 text-center">
+                  {/* Disqualifying grade flag (Desktop only) */}
+                  <td className="hidden sm:table-cell px-4 py-3 w-48 text-center">
                     <button
                       onClick={() =>
                         onUpdate(qs.id, {
@@ -155,8 +190,8 @@ export function QuickEntryTable({
                     </button>
                   </td>
 
-                  {/* Remove */}
-                  <td className="px-4 py-3 text-center">
+                  {/* Remove (Desktop only) */}
+                  <td className="hidden sm:table-cell px-4 py-3 w-12 text-center">
                     {quickSemesters.length > 1 && (
                       <button
                         onClick={() => onRemove(qs.id)}

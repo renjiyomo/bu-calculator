@@ -23,10 +23,10 @@ export function SubjectTable({
   onAdd,
 }: SubjectTableProps) {
   return (
-    <div className="card p-0 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
+    <div className="card p-0 overflow-hidden border-0 sm:border border-charcoal-200 dark:border-charcoal-700 bg-transparent sm:bg-white dark:sm:bg-charcoal-800 shadow-none sm:shadow-sm">
+      <div className="overflow-x-auto sm:overflow-visible">
+        <table className="w-full block sm:table">
+          <thead className="hidden sm:table-header-group">
             <tr className="border-b border-charcoal-100 dark:border-charcoal-600 bg-cream-100 dark:bg-charcoal-700/50">
               <th className="px-3 py-3 text-2xs font-semibold text-charcoal-400 dark:text-charcoal-400 uppercase tracking-wider w-10 text-center">
                 #
@@ -46,7 +46,7 @@ export function SubjectTable({
               <th className="px-3 py-3 w-12"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-charcoal-50 dark:divide-charcoal-700">
+          <tbody className="divide-y divide-charcoal-50 dark:divide-charcoal-700 block sm:table-row-group space-y-3 sm:space-y-0 p-3 sm:p-0">
             {subjects.map((subject, index) => (
               <SubjectRow
                 key={subject.id}

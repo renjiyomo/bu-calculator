@@ -33,9 +33,9 @@ const styleMap: Record<string, string> = {
 };
 
 const sizeMap = {
-  sm: 'text-xs px-2 py-0.5',
-  md: 'text-sm px-3 py-1.5',
-  lg: 'text-base px-4 py-2',
+  sm: 'text-[10px] px-1.5 py-0.5 whitespace-nowrap flex-shrink-0',
+  md: 'text-2xs sm:text-xs px-2.5 py-1 whitespace-nowrap flex-shrink-0',
+  lg: 'text-xs sm:text-sm px-3 py-1.5 whitespace-nowrap flex-shrink-0',
 };
 
 export function HonorBadge({ type, label, size = 'md' }: HonorBadgeProps) {
@@ -45,9 +45,9 @@ export function HonorBadge({ type, label, size = 'md' }: HonorBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 font-semibold rounded-sm animate-scale-in ${style} ${sizeClass}`}
+      className={`inline-flex items-center gap-1.5 font-semibold rounded-sm animate-scale-in whitespace-nowrap flex-shrink-0 ${style} ${sizeClass}`}
     >
-      <Icon className="w-3.5 h-3.5" />
+      <Icon className="w-3.5 h-3.5 flex-shrink-0" />
       {label}
     </span>
   );
