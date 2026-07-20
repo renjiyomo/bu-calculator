@@ -11,13 +11,17 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
-import type { Subject, Semester, HonorsRules, View } from '../types';
+import type { Subject, Semester, QuickSemester, HonorsRules, View, CumulativeInputMode } from '../types';
 import { DEFAULT_RULES } from '../types';
 import {
   loadSemesterSubjects,
   saveSemesterSubjects,
   loadSemesters,
   saveSemesters,
+  loadQuickSemesters,
+  saveQuickSemesters,
+  loadCumulativeMode,
+  saveCumulativeMode,
   loadRules,
   saveRules,
   loadActiveView,
@@ -27,6 +31,7 @@ import {
 import {
   createEmptySubject,
   createEmptySemester,
+  createEmptyQuickSemester,
   generateSemesterName,
 } from '../utils/bu-computation';
 
@@ -43,7 +48,7 @@ interface AppContextValue {
   updateSemesterSubject: (id: string, updates: Partial<Subject>) => void;
   clearSemesterSubjects: () => void;
 
-  // Tool B: Cumulative semesters
+  // Tool B: Cumulative semesters (detailed mode)
   semesters: Semester[];
   setSemesters: (semesters: Semester[]) => void;
   addSemester: () => void;
@@ -58,6 +63,15 @@ interface AppContextValue {
   ) => void;
   clearAllSemesters: () => void;
   toggleSemesterCollapse: (id: string) => void;
+
+  // Tool B: Quick semesters (quick mode)
+  cumulativeInputMode: CumulativeInputMode;
+  setCumulativeInputMode: (mode: CumulativeInputMode) => void;
+  quickSemesters: QuickSemester[];
+  addQuickSemester: () => void;
+  removeQuickSemester: (id: string) => void;
+  updateQuickSemester: (id: string, updates: Partial<QuickSemester>) => void;
+  clearQuickSemesters: () => void;
 
   // Tool C: Rules
   rules: HonorsRules;
@@ -77,6 +91,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [semesters, setSemestersState] = useState<Semester[]>(() =>
     loadSemesters()
   );
+  const [quickSemesters, setQuickSemestersState] = useState<QuickSemester[]>(() =>
+    loadQuickSemesters()
+  );
+  const [cumulativeInputMode, setCumulativeInputModeState] = useState<CumulativeInputMode>(() =>
+    loadCumulativeMode()
+  );
   const [rules, setRulesState] = useState<HonorsRules>(() => loadRules());
 
   // ---- Persist on every change ----
@@ -87,6 +107,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     saveSemesters(semesters);
   }, [semesters]);
+
+  useEffect(() => {
+    saveQuickSemesters(quickSemesters);
+  }, [quickSemesters]);
+
+  useEffect(() => {
+    saveCumulativeMode(cumulativeInputMode);
+  }, [cumulativeInputMode]);
 
   useEffect(() => {
     saveRules(rules);
@@ -130,7 +158,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSemesterSubjectsState([createEmptySubject()]);
   }, []);
 
-  // ---- Tool B: Cumulative semesters ----
+  // ---- Tool B: Cumulative semesters (detailed mode) ----
   const setSemesters = useCallback((semesters: Semester[]) => {
     setSemestersState(semesters);
   }, []);
@@ -215,6 +243,40 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSemestersState([createEmptySemester('Year 1 — Semester 1')]);
   }, []);
 
+  // ---- Tool B: Quick semesters ----
+  const setCumulativeInputMode = useCallback((mode: CumulativeInputMode) => {
+    setCumulativeInputModeState(mode);
+  }, []);
+
+  const addQuickSemester = useCallback(() => {
+    setQuickSemestersState((prev) => {
+      const name = generateSemesterName(prev.length);
+      return [...prev, createEmptyQuickSemester(name)];
+    });
+  }, []);
+
+  const removeQuickSemester = useCallback((id: string) => {
+    setQuickSemestersState((prev) => {
+      const filtered = prev.filter((s) => s.id !== id);
+      return filtered.length > 0
+        ? filtered
+        : [createEmptyQuickSemester('Year 1 — Semester 1')];
+    });
+  }, []);
+
+  const updateQuickSemester = useCallback(
+    (id: string, updates: Partial<QuickSemester>) => {
+      setQuickSemestersState((prev) =>
+        prev.map((s) => (s.id === id ? { ...s, ...updates } : s))
+      );
+    },
+    []
+  );
+
+  const clearQuickSemesters = useCallback(() => {
+    setQuickSemestersState([createEmptyQuickSemester('Year 1 — Semester 1')]);
+  }, []);
+
   // ---- Tool C: Rules ----
   const updateRules = useCallback((updates: Partial<HonorsRules>) => {
     setRulesState((prev) => ({ ...prev, ...updates }));
@@ -247,6 +309,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateSubjectInSemester,
         clearAllSemesters,
         toggleSemesterCollapse,
+        cumulativeInputMode,
+        setCumulativeInputMode,
+        quickSemesters,
+        addQuickSemester,
+        removeQuickSemester,
+        updateQuickSemester,
+        clearQuickSemesters,
         rules,
         updateRules,
         resetRules,

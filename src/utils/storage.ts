@@ -2,13 +2,15 @@
 // BU Calculator — localStorage Persistence
 // ========================================
 
-import type { AppState, Subject, Semester, HonorsRules } from '../types';
+import type { AppState, Subject, Semester, QuickSemester, HonorsRules, CumulativeInputMode } from '../types';
 import { DEFAULT_RULES } from '../types';
-import { createEmptySubject, createEmptySemester } from './bu-computation';
+import { createEmptySubject, createEmptySemester, createEmptyQuickSemester } from './bu-computation';
 
 const STORAGE_KEYS = {
   SEMESTER_SUBJECTS: 'bu-calc-semester-subjects',
   SEMESTERS: 'bu-calc-semesters',
+  QUICK_SEMESTERS: 'bu-calc-quick-semesters',
+  CUMULATIVE_MODE: 'bu-calc-cumulative-mode',
   RULES: 'bu-calc-rules',
   ACTIVE_VIEW: 'bu-calc-active-view',
   THEME: 'bu-calc-theme',
@@ -62,6 +64,33 @@ export function loadSemesters(): Semester[] {
 
 export function saveSemesters(semesters: Semester[]): void {
   safeSetItem(STORAGE_KEYS.SEMESTERS, semesters);
+}
+
+// ----------------------------------------
+// Quick semesters (Tool B — quick mode)
+// ----------------------------------------
+
+export function loadQuickSemesters(): QuickSemester[] {
+  const qs = safeGetItem<QuickSemester[]>(STORAGE_KEYS.QUICK_SEMESTERS, []);
+  return qs.length > 0
+    ? qs
+    : [createEmptyQuickSemester('Year 1 — Semester 1')];
+}
+
+export function saveQuickSemesters(quickSemesters: QuickSemester[]): void {
+  safeSetItem(STORAGE_KEYS.QUICK_SEMESTERS, quickSemesters);
+}
+
+// ----------------------------------------
+// Cumulative input mode
+// ----------------------------------------
+
+export function loadCumulativeMode(): CumulativeInputMode {
+  return safeGetItem<CumulativeInputMode>(STORAGE_KEYS.CUMULATIVE_MODE, 'quick');
+}
+
+export function saveCumulativeMode(mode: CumulativeInputMode): void {
+  safeSetItem(STORAGE_KEYS.CUMULATIVE_MODE, mode);
 }
 
 // ----------------------------------------

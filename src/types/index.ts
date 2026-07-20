@@ -24,12 +24,28 @@ export interface Subject {
   isPeNstp: boolean;
 }
 
-/** A semester containing multiple subjects */
+/** Input mode for cumulative calculator */
+export type CumulativeInputMode = 'quick' | 'detailed';
+
+/** A semester containing multiple subjects (detailed mode) */
 export interface Semester {
   id: string;
   name: string;
   subjects: Subject[];
   isCollapsed: boolean;
+}
+
+/**
+ * A semester entered via quick mode — user just types their
+ * pre-computed GWA and total academic units from their transcript.
+ */
+export interface QuickSemester {
+  id: string;
+  name: string;
+  gwa: number | '';
+  totalUnits: number | '';
+  /** User self-reports whether this semester had any 5.0/INC/DRP */
+  hasDisqualifyingGrade: boolean;
 }
 
 /** Result of a GWA computation */
@@ -103,7 +119,9 @@ export interface AppState {
   // Tool A: Semester calculator
   semesterSubjects: Subject[];
   // Tool B: Cumulative calculator
+  cumulativeInputMode: CumulativeInputMode;
   semesters: Semester[];
+  quickSemesters: QuickSemester[];
   // Tool C: Rules
   rules: HonorsRules;
   // UI state

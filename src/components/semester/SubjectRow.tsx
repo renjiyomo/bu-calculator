@@ -80,8 +80,11 @@ export function SubjectRow({
       </td>
 
       {/* PE/NSTP Toggle */}
-      <td className="px-3 py-2.5 w-24 text-center">
-        <label className="relative inline-flex items-center cursor-pointer">
+      <td className="px-3 py-2.5 w-32 text-center">
+        <label
+          className="relative inline-flex items-center cursor-pointer group/toggle"
+          title="Exclude this subject from GWA computation (for PE and NSTP)"
+        >
           <input
             type="checkbox"
             checked={subject.isPeNstp}
@@ -90,6 +93,9 @@ export function SubjectRow({
             id={`pe-nstp-${subject.id}`}
           />
           <div className="w-8 h-4.5 bg-charcoal-200 dark:bg-charcoal-600 peer-focus:ring-2 peer-focus:ring-sage-500/20 rounded-sm peer peer-checked:after:translate-x-full peer-checked:bg-sage-500 dark:peer-checked:bg-sage-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-sm after:h-3.5 after:w-3.5 after:transition-all"></div>
+          <span className="ml-2 text-2xs font-medium text-charcoal-400 dark:text-charcoal-500 group-hover/toggle:text-charcoal-600 dark:group-hover/toggle:text-charcoal-300">
+            {subject.isPeNstp ? 'Excluded' : 'Included'}
+          </span>
         </label>
       </td>
 

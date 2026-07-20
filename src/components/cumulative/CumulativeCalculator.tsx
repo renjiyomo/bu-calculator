@@ -1,18 +1,26 @@
 // ========================================
 // Cumulative Calculator View (Tool B)
 // Latin Honors calculator across all semesters
+// Supports two input modes:
+//   - Quick: Enter GWA + units per semester (from transcript)
+//   - Detailed: Enter every subject grade individually
 // ========================================
 
 import { useMemo } from 'react';
-import { Plus, RotateCcw, Download } from 'lucide-react';
+import { Plus, RotateCcw, Download, Zap, List } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { evaluateLatinHonors } from '../../utils/bu-computation';
+import { evaluateLatinHonors, evaluateLatinHonorsQuick } from '../../utils/bu-computation';
 import { exportCumulativePDF } from '../../utils/pdf-export';
 import { SemesterAccordion } from './SemesterAccordion';
+import { QuickEntryTable } from './QuickEntryTable';
 import { CumulativeSummary } from './CumulativeSummary';
 
 export function CumulativeCalculator() {
   const {
+    // Mode
+    cumulativeInputMode,
+    setCumulativeInputMode,
+    // Detailed
     semesters,
     addSemester,
     removeSemester,
@@ -22,18 +30,37 @@ export function CumulativeCalculator() {
     updateSubjectInSemester,
     clearAllSemesters,
     toggleSemesterCollapse,
+    // Quick
+    quickSemesters,
+    addQuickSemester,
+    removeQuickSemester,
+    updateQuickSemester,
+    clearQuickSemesters,
+    // Rules
     rules,
   } = useApp();
 
-  // Evaluate Latin Honors reactively
-  const evaluation = useMemo(
-    () => evaluateLatinHonors(semesters, rules),
-    [semesters, rules]
-  );
+  const isQuickMode = cumulativeInputMode === 'quick';
 
-  const hasData = semesters.some((s) =>
-    s.subjects.some((sub) => sub.grade !== '')
-  );
+  // Evaluate Latin Honors reactively based on mode
+  const evaluation = useMemo(() => {
+    if (isQuickMode) {
+      return evaluateLatinHonorsQuick(quickSemesters, rules);
+    }
+    return evaluateLatinHonors(semesters, rules);
+  }, [isQuickMode, quickSemesters, semesters, rules]);
+
+  const hasData = isQuickMode
+    ? quickSemesters.some((qs) => qs.gwa !== '' && qs.totalUnits !== '')
+    : semesters.some((s) => s.subjects.some((sub) => sub.grade !== ''));
+
+  const handleClear = () => {
+    if (isQuickMode) {
+      clearQuickSemesters();
+    } else {
+      clearAllSemesters();
+    }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -51,63 +78,117 @@ export function CumulativeCalculator() {
         <div className="flex gap-2">
           {hasData && (
             <>
+              {!isQuickMode && (
+                <button
+                  onClick={() =>
+                    exportCumulativePDF(semesters, evaluation, rules)
+                  }
+                  className="btn-secondary text-xs"
+                  id="export-cumulative-pdf"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Export PDF
+                </button>
+              )}
               <button
-                onClick={() =>
-                  exportCumulativePDF(semesters, evaluation, rules)
-                }
-                className="btn-secondary text-xs"
-                id="export-cumulative-pdf"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Export PDF
-              </button>
-              <button
-                onClick={clearAllSemesters}
+                onClick={handleClear}
                 className="btn-secondary text-xs"
                 id="clear-cumulative"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                Clear All
+                Clear
               </button>
             </>
           )}
         </div>
       </div>
 
-      {/* Cumulative GWA Summary */}
-      <CumulativeSummary evaluation={evaluation} />
-
-      {/* Semester Accordions */}
-      <div className="space-y-3">
-        {semesters.map((semester) => (
-          <SemesterAccordion
-            key={semester.id}
-            semester={semester}
-            rules={rules}
-            onToggleCollapse={() => toggleSemesterCollapse(semester.id)}
-            onRemove={() => removeSemester(semester.id)}
-            onUpdateName={(name) => updateSemester(semester.id, { name })}
-            onAddSubject={() => addSubjectToSemester(semester.id)}
-            onRemoveSubject={(subjectId) =>
-              removeSubjectFromSemester(semester.id, subjectId)
-            }
-            onUpdateSubject={(subjectId, updates) =>
-              updateSubjectInSemester(semester.id, subjectId, updates)
-            }
-            showRemove={semesters.length > 1}
-          />
-        ))}
+      {/* Input Mode Toggle */}
+      <div className="card p-0 overflow-hidden">
+        <div className="flex border-b border-charcoal-100 dark:border-charcoal-700">
+          <button
+            onClick={() => setCumulativeInputMode('quick')}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium transition-all duration-150 ${
+              isQuickMode
+                ? 'bg-forest-700 dark:bg-sage-700 text-white'
+                : 'bg-cream-50 dark:bg-charcoal-700/50 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-100 dark:hover:bg-charcoal-700 hover:text-charcoal-600 dark:hover:text-charcoal-300'
+            }`}
+            id="mode-quick"
+          >
+            <Zap className="w-4 h-4" />
+            <div className="text-left">
+              <div className="leading-tight">Quick Entry</div>
+              <div className={`text-2xs leading-tight mt-0.5 ${isQuickMode ? 'text-white/70' : 'text-charcoal-300 dark:text-charcoal-500'}`}>
+                Just enter GWA & units per semester
+              </div>
+            </div>
+          </button>
+          <button
+            onClick={() => setCumulativeInputMode('detailed')}
+            className={`flex-1 flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-medium transition-all duration-150 ${
+              !isQuickMode
+                ? 'bg-forest-700 dark:bg-sage-700 text-white'
+                : 'bg-cream-50 dark:bg-charcoal-700/50 text-charcoal-400 dark:text-charcoal-500 hover:bg-cream-100 dark:hover:bg-charcoal-700 hover:text-charcoal-600 dark:hover:text-charcoal-300'
+            }`}
+            id="mode-detailed"
+          >
+            <List className="w-4 h-4" />
+            <div className="text-left">
+              <div className="leading-tight">Detailed Entry</div>
+              <div className={`text-2xs leading-tight mt-0.5 ${!isQuickMode ? 'text-white/70' : 'text-charcoal-300 dark:text-charcoal-500'}`}>
+                Enter every subject grade individually
+              </div>
+            </div>
+          </button>
+        </div>
       </div>
 
-      {/* Add Semester Button */}
-      <button
-        onClick={addSemester}
-        className="btn-primary w-full sm:w-auto"
-        id="add-semester-btn"
-      >
-        <Plus className="w-4 h-4" />
-        Add Semester
-      </button>
+      {/* Cumulative GWA Summary */}
+      <CumulativeSummary evaluation={evaluation} isQuickMode={isQuickMode} />
+
+      {/* Input Area — depends on mode */}
+      {isQuickMode ? (
+        /* ---- Quick Mode ---- */
+        <QuickEntryTable
+          quickSemesters={quickSemesters}
+          onUpdate={updateQuickSemester}
+          onRemove={removeQuickSemester}
+          onAdd={addQuickSemester}
+        />
+      ) : (
+        /* ---- Detailed Mode ---- */
+        <>
+          <div className="space-y-3">
+            {semesters.map((semester) => (
+              <SemesterAccordion
+                key={semester.id}
+                semester={semester}
+                rules={rules}
+                onToggleCollapse={() => toggleSemesterCollapse(semester.id)}
+                onRemove={() => removeSemester(semester.id)}
+                onUpdateName={(name) => updateSemester(semester.id, { name })}
+                onAddSubject={() => addSubjectToSemester(semester.id)}
+                onRemoveSubject={(subjectId) =>
+                  removeSubjectFromSemester(semester.id, subjectId)
+                }
+                onUpdateSubject={(subjectId, updates) =>
+                  updateSubjectInSemester(semester.id, subjectId, updates)
+                }
+                showRemove={semesters.length > 1}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={addSemester}
+            className="btn-primary w-full sm:w-auto"
+            id="add-semester-btn"
+          >
+            <Plus className="w-4 h-4" />
+            Add Semester
+          </button>
+        </>
+      )}
 
       {/* Reference Info */}
       <div className="card bg-cream-50 dark:bg-charcoal-800/50 border-dashed">

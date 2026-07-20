@@ -10,6 +10,7 @@
 import type {
   Subject,
   Semester,
+  QuickSemester,
   Grade,
   GWAResult,
   SemesterHonor,
@@ -197,7 +198,7 @@ export function evaluateSemesterHonors(
 // ----------------------------------------
 
 /**
- * Computes per-semester GWA summaries for display.
+ * Computes per-semester GWA summaries for display (detailed mode).
  */
 export function computeSemesterSummaries(
   semesters: Semester[],
@@ -218,7 +219,28 @@ export function computeSemesterSummaries(
 }
 
 /**
- * Evaluates Latin Honors eligibility across all semesters.
+ * Computes per-semester GWA summaries from quick-entry data.
+ */
+export function computeQuickSemesterSummaries(
+  quickSemesters: QuickSemester[]
+): SemesterSummary[] {
+  return quickSemesters.map((qs) => {
+    const gwa = typeof qs.gwa === 'number' ? qs.gwa : 0;
+    const units = typeof qs.totalUnits === 'number' ? qs.totalUnits : 0;
+    return {
+      semesterId: qs.id,
+      semesterName: qs.name,
+      gwa,
+      totalUnits: units,
+      totalWeightedGrades: gwa * units,
+      subjectCount: 0, // not applicable in quick mode
+      hasIssues: qs.hasDisqualifyingGrade,
+    };
+  });
+}
+
+/**
+ * Evaluates Latin Honors from detailed subject-by-subject entry.
  *
  * Per BU Handbook:
  * - Summa Cum Laude: GWA 1.00–1.25
@@ -242,7 +264,72 @@ export function evaluateLatinHonors(
   // Compute per-semester summaries for the UI
   const semesterSummaries = computeSemesterSummaries(semesters, rules);
 
-  // Immediate disqualification check
+  return classifyLatinHonors(gwaResult, semesterSummaries, rules);
+}
+
+/**
+ * Evaluates Latin Honors from quick GWA entries.
+ *
+ * In quick mode, the user enters their pre-computed GWA and total units
+ * per semester (from their official transcript/Report of Grades).
+ * We recompute the cumulative GWA as a weighted average of semester GWAs.
+ *
+ * Formula: Cumulative GWA = Σ(Semester GWA × Semester Units) / Σ(Semester Units)
+ */
+export function evaluateLatinHonorsQuick(
+  quickSemesters: QuickSemester[],
+  rules: HonorsRules
+): LatinHonorsEvaluation {
+  const semesterSummaries = computeQuickSemesterSummaries(quickSemesters);
+
+  // Check for user-flagged disqualifying grades
+  const hasDisqualifying = quickSemesters.some((qs) => qs.hasDisqualifyingGrade);
+  const disqualifyingSemesters = quickSemesters.filter((qs) => qs.hasDisqualifyingGrade);
+
+  // Compute cumulative weighted GWA
+  let totalWeightedGrades = 0;
+  let totalAcademicUnits = 0;
+
+  for (const qs of quickSemesters) {
+    const gwa = typeof qs.gwa === 'number' ? qs.gwa : 0;
+    const units = typeof qs.totalUnits === 'number' ? qs.totalUnits : 0;
+    if (gwa > 0 && units > 0) {
+      totalWeightedGrades += gwa * units;
+      totalAcademicUnits += units;
+    }
+  }
+
+  const isValid = totalAcademicUnits > 0;
+  const cumulativeGwa = isValid ? totalWeightedGrades / totalAcademicUnits : 0;
+
+  // Build a GWAResult-compatible object for quick mode
+  const gwaResult: GWAResult = {
+    gwa: cumulativeGwa,
+    totalWeightedGrades,
+    totalAcademicUnits,
+    isValid,
+    hasDisqualifyingGrades: hasDisqualifying,
+    disqualifyingSubjects: disqualifyingSemesters.map((qs) => ({
+      id: qs.id,
+      subjectCode: qs.name,
+      units: typeof qs.totalUnits === 'number' ? qs.totalUnits : 0,
+      grade: '' as any,
+      isPeNstp: false,
+    })),
+  };
+
+  return classifyLatinHonors(gwaResult, semesterSummaries, rules);
+}
+
+/**
+ * Shared classification logic for Latin Honors.
+ * Used by both detailed and quick evaluation paths.
+ */
+function classifyLatinHonors(
+  gwaResult: GWAResult,
+  semesterSummaries: SemesterSummary[],
+  rules: HonorsRules
+): LatinHonorsEvaluation {
   if (gwaResult.hasDisqualifyingGrades) {
     return {
       gwaResult,
@@ -256,7 +343,7 @@ export function evaluateLatinHonors(
     return {
       gwaResult,
       honor: 'none',
-      honorLabel: 'Add semesters and subjects to compute cumulative GWA',
+      honorLabel: 'Add semesters to compute cumulative GWA',
       semesterSummaries,
     };
   }
@@ -264,18 +351,13 @@ export function evaluateLatinHonors(
   let honor: LatinHonor = 'none';
   let honorLabel = 'No Latin Honors';
 
-  // Check Summa Cum Laude
   if (gwaResult.gwa >= 1.0 && gwaResult.gwa <= rules.summaCumLaudeMax) {
     honor = 'summa';
     honorLabel = 'Summa Cum Laude';
-  }
-  // Check Magna Cum Laude
-  else if (gwaResult.gwa > rules.summaCumLaudeMax && gwaResult.gwa <= rules.magnaCumLaudeMax) {
+  } else if (gwaResult.gwa > rules.summaCumLaudeMax && gwaResult.gwa <= rules.magnaCumLaudeMax) {
     honor = 'magna';
     honorLabel = 'Magna Cum Laude';
-  }
-  // Check Cum Laude
-  else if (gwaResult.gwa > rules.magnaCumLaudeMax && gwaResult.gwa <= rules.cumLaudeMax) {
+  } else if (gwaResult.gwa > rules.magnaCumLaudeMax && gwaResult.gwa <= rules.cumLaudeMax) {
     honor = 'cum_laude';
     honorLabel = 'Cum Laude';
   }
@@ -321,6 +403,19 @@ export function createEmptySemester(name: string): Semester {
     name,
     subjects: [createEmptySubject()],
     isCollapsed: false,
+  };
+}
+
+/**
+ * Creates a new empty quick semester for quick-entry mode.
+ */
+export function createEmptyQuickSemester(name: string): QuickSemester {
+  return {
+    id: crypto.randomUUID(),
+    name,
+    gwa: '',
+    totalUnits: '',
+    hasDisqualifyingGrade: false,
   };
 }
 
