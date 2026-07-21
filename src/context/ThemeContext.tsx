@@ -26,7 +26,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const toggleTheme = () => {
+    // Add transition class to body to force smooth animations globally during switch
+    document.documentElement.classList.add('theme-transitioning');
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    
+    // Remove the class after transition completes
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    }, 400);
   };
 
   return (
