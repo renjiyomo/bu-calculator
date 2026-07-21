@@ -3,7 +3,7 @@
 // Top bar with branding and theme toggle
 // ========================================
 
-import { Sun, Moon, Settings } from 'lucide-react';
+import { Sun, Moon, Settings, Calculator } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { useApp } from '../../context/AppContext';
 
@@ -15,8 +15,8 @@ export function Header() {
     <header className="h-14 border-b border-charcoal-100 dark:border-charcoal-700 bg-white dark:bg-charcoal-800 flex items-center justify-between px-5 flex-shrink-0">
       {/* Left: Branding */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-forest-700 dark:bg-sage-600 rounded-sm flex items-center justify-center">
-          <span className="text-white font-bold text-sm">BU</span>
+        <div className="w-8 h-8 bg-gradient-to-br from-charcoal-800 to-charcoal-600 dark:from-white dark:to-charcoal-100 rounded-lg flex items-center justify-center shadow-sm ring-1 ring-charcoal-900/5 dark:ring-charcoal-100/50">
+          <Calculator className="w-4.5 h-4.5 text-white dark:text-charcoal-900" strokeWidth={2.5} />
         </div>
         <div className="hidden sm:block">
           <h1 className="text-sm font-bold text-charcoal-700 dark:text-charcoal-100 leading-tight">
