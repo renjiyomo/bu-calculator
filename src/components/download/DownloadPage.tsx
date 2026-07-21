@@ -17,8 +17,8 @@ import {
 // ── Config ──────────────────────────────────────────────────────────────────
 // Replace this URL with the direct GitHub Releases APK download link
 // after you build and upload your APK (see docs/android-build-guide.md).
-const APK_DOWNLOAD_URL = 'https://github.com/renjiyomo/bu-calculator/releases/download/v1.1.2/bueno-calculator-v1.1.2.apk';
-const APK_VERSION = '1.1.2';
+const APK_DOWNLOAD_URL = 'https://github.com/renjiyomo/bu-calculator/releases/download/v1.1.3/bueno-calculator-v1.1.3.apk';
+const APK_VERSION = '1.1.3';
 const APK_SIZE_MB = '1.65 MB';
 const GITHUB_RELEASES_URL = 'https://github.com/renjiyomo/bu-calculator/releases';
 
