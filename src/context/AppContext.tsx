@@ -109,6 +109,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [userName, setUserNameState] = useState<string>(() => loadUserName());
   const isPWA = useIsPWA();
 
+  // ---- APK Version Tracker ----
+  // When the Android app is launched, it opens with ?apkVersion=x.x.x
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const apkVersion = params.get('apkVersion');
+    if (apkVersion) {
+      localStorage.setItem('bueno_installed_apk_version', apkVersion);
+      // Clean up the URL so it doesn't stay in the address bar
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   // ---- PWA Redirect ----
   // (Removed: We now allow PWA/TWA users to access the download page for updates)
 

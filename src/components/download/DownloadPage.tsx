@@ -185,9 +185,9 @@ export function DownloadPage() {
   }, []);
 
   const handleDownloadClick = () => {
-    // When they click download or update, save the current APK_VERSION as their installed version
-    localStorage.setItem('bueno_last_apk_version', APK_VERSION);
-    setLastDownloadedVersion(APK_VERSION);
+    // We do NOT update localStorage here anymore.
+    // localStorage is ONLY updated automatically when the new APK opens and passes ?apkVersion=x.x.x
+    // See AppContext.tsx for that logic!
   };
 
   const isUpdateAvailable = lastDownloadedVersion !== APK_VERSION;
