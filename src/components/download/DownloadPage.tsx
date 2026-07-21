@@ -11,7 +11,6 @@ import {
   Shield,
   CheckCircle2,
   AlertCircle,
-  ExternalLink,
 } from 'lucide-react';
 
 // ── Config ──────────────────────────────────────────────────────────────────
