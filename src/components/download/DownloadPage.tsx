@@ -178,7 +178,7 @@ export function DownloadPage() {
   const [lastDownloadedVersion, setLastDownloadedVersion] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('bueno_last_apk_version');
+    const saved = localStorage.getItem('bueno_installed_apk_version');
     if (saved) {
       setLastDownloadedVersion(saved);
     }
