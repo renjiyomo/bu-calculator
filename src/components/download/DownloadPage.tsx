@@ -15,7 +15,6 @@ import {
   Shield,
   RefreshCw,
   CheckCircle2,
-  ExternalLink,
   AlertCircle,
 } from 'lucide-react';
 
@@ -236,16 +235,6 @@ export function DownloadPage() {
                 Coming Soon
               </button>
             )}
-            <a
-              href={GITHUB_RELEASES_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              id="link-github-releases"
-              className="flex items-center gap-1 text-2xs text-charcoal-400 dark:text-charcoal-500 hover:text-forest-600 dark:hover:text-sage-400 transition-colors"
-            >
-              <ExternalLink className="w-3 h-3" />
-              View all releases on GitHub
-            </a>
           </div>
         </div>
 
