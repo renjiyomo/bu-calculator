@@ -80,18 +80,16 @@ export function CumulativeCalculator() {
         <div className="flex gap-2">
           {hasData && (
             <>
-              {!isQuickMode && (
-                <button
-                  onClick={() =>
-                    exportCumulativePDF(semesters, evaluation, rules, userName)
-                  }
-                  className="btn-secondary text-xs"
-                  id="export-cumulative-pdf"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Export PDF
-                </button>
-              )}
+              <button
+                onClick={() =>
+                  exportCumulativePDF(semesters, evaluation, rules, userName)
+                }
+                className="btn-secondary text-xs"
+                id="export-cumulative-pdf"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Export PDF
+              </button>
               <button
                 onClick={handleClear}
                 className="btn-secondary text-xs"
