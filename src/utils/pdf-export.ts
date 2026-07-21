@@ -3,7 +3,7 @@
 // ========================================
 
 import type { SemesterEvaluation, LatinHonorsEvaluation, Subject, Semester, HonorsRules } from '../types';
-import { formatGWA, getGradeLabel } from './bu-computation';
+import { formatGWA } from './bu-computation';
 import { jsPDF } from 'jspdf';
 
 // ----------------------------------------
@@ -19,74 +19,89 @@ export function exportSemesterPDF(
   const margin = 20;
   let y = margin;
   
-  // Custom colors
-  const primaryColor = [22, 101, 52]; // forest-800
-  const secondaryColor = [63, 98, 18]; // sage-700
-  const textColor = [51, 65, 85]; // slate-700
-  const lightGray = [241, 245, 249];
+  // Minimalist Palette
+  const primaryColor = [17, 24, 39]; // Gray 900
+  const textColor = [55, 65, 81]; // Gray 700
+  const lightGray = [249, 250, 251]; // Gray 50
+  const borderGray = [229, 231, 235]; // Gray 200
 
-  // Header Block (Colored)
-  doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  doc.rect(0, 0, 210, 40, 'F');
+  // Top Minimalist Border
+  doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, 210 - margin, y);
   
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(24);
+  y += 12;
+
+  // Header Title
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-  doc.text('BICOL UNIVERSITY', margin, 22);
+  doc.text('BICOL UNIVERSITY', margin, y);
   
-  doc.setFontSize(12);
+  y += 6;
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('SEMESTER GWA REPORT', margin, 30);
+  doc.setTextColor(107, 114, 128); // Gray 500
+  doc.text('SEMESTER GWA REPORT', margin, y);
   
-  y = 50;
-  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+  y += 5;
+  doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+  doc.line(margin, y, 210 - margin, y);
 
-  // Student Info Box
+  y += 12;
+
+  // Student Info
   if (userName) {
-    doc.setFontSize(14);
+    doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text(`Student Name: ${userName}`, margin, y);
     y += 10;
   }
 
-  // Result Summary Box
+  // Result Summary Box (Minimalist Outline + Light Fill)
   doc.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
-  doc.rect(margin, y, 170, 35, 'F');
+  doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+  doc.rect(margin, y, 170, 28, 'FD');
   
-  y += 10;
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`General Weighted Average (GWA): ${formatGWA(evaluation.gwaResult.gwa)}`, margin + 5, y);
   y += 8;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.text(`Semester GWA: ${formatGWA(evaluation.gwaResult.gwa)}`, margin + 6, y);
+  
+  y += 6;
   doc.setFont('helvetica', 'normal');
-  doc.text(`Total Academic Units: ${evaluation.gwaResult.totalAcademicUnits}`, margin + 5, y);
-  y += 8;
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  doc.text(`Status: ${evaluation.honorLabel || 'No Honors'}`, margin + 5, y);
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-
-  y += 20;
-
-  // Subject table header
-  doc.setFillColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  doc.rect(margin, y - 5, 170, 10, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
+  doc.text(`Total Academic Units: ${evaluation.gwaResult.totalAcademicUnits}`, margin + 6, y);
+  
+  y += 6;
   doc.setFont('helvetica', 'bold');
-  doc.text('Subject', margin + 2, y + 1);
-  doc.text('Units', 90, y + 1);
-  doc.text('Grade', 115, y + 1);
-  doc.text('Rating', 140, y + 1);
-  doc.text('NSTP Subject', 160, y + 1);
-  y += 8;
-  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+  doc.text(`Honors Status: ${evaluation.honorLabel || 'No Honors'}`, margin + 6, y);
 
-  // Subject rows
+  y += 18;
+
+  // Simplified Table Headers (Only Subject, Units, Grade)
+  doc.setFillColor(243, 244, 246); // Gray 100
+  doc.rect(margin, y - 5, 170, 9, 'F');
+  
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Subject Description', margin + 4, y + 1);
+  doc.text('Units', 110, y + 1);
+  doc.text('Grade', 155, y + 1);
+  
+  y += 8;
+
+  // Rows
   doc.setFont('helvetica', 'normal');
-    const academicSubjects = subjects.filter((s) => s.grade !== '');
-    let isAlt = false;
-    for (const subject of academicSubjects) {
+  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+  
+  const academicSubjects = subjects.filter((s) => s.grade !== '');
+  let isAlt = false;
+  
+  academicSubjects.forEach((subject, idx) => {
     if (y > 270) {
       doc.addPage();
       y = margin;
@@ -94,28 +109,24 @@ export function exportSemesterPDF(
     
     if (isAlt) {
       doc.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
-      doc.rect(margin, y - 5, 170, 8, 'F');
+      doc.rect(margin, y - 5, 170, 7, 'F');
     }
     isAlt = !isAlt;
 
-    doc.text(subject.subjectCode || '(No code)', margin + 2, y);
-    doc.text(String(subject.units), 90, y);
-    doc.text(String(subject.grade), 115, y);
-    if (typeof subject.grade === 'number' && subject.grade !== 5.0) {
-      doc.text(getGradeLabel(subject.grade), 140, y);
-    } else {
-      doc.text(getGradeLabel(subject.grade as any), 140, y);
-    }
-    doc.text(subject.isNstp ? 'Yes' : 'No', 170, y);
-    y += 8;
-  }
+    const label = `Subject #${idx + 1}${subject.isNstp ? ' (NSTP Excluded)' : ''}`;
+    doc.text(label, margin + 4, y);
+    doc.text(String(subject.units), 110, y);
+    doc.text(String(subject.grade), 155, y);
+    
+    y += 7;
+  });
 
   // Footer
-  y += 10;
+  y += 8;
   doc.setFontSize(8);
-  doc.setTextColor(150, 150, 150);
+  doc.setTextColor(156, 163, 175); // Gray 400
   doc.text(
-    `Generated by BU Calculator — ${new Date().toLocaleDateString()}`,
+    `Generated via BU GWA Calculator · ${new Date().toLocaleDateString()}`,
     margin,
     y
   );
@@ -137,54 +148,67 @@ export function exportCumulativePDF(
   const margin = 20;
   let y = margin;
 
-  // Custom colors
-  const primaryColor = [22, 101, 52];
-  const secondaryColor = [63, 98, 18];
-  const textColor = [51, 65, 85];
-  const lightGray = [241, 245, 249];
+  // Minimalist Palette
+  const primaryColor = [17, 24, 39];
+  const textColor = [55, 65, 81];
+  const lightGray = [249, 250, 251];
+  const borderGray = [229, 231, 235];
 
-  // Header Block (Colored)
-  doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  doc.rect(0, 0, 210, 40, 'F');
+  // Top Minimalist Border
+  doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setLineWidth(0.5);
+  doc.line(margin, y, 210 - margin, y);
   
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(24);
+  y += 12;
+
+  // Header Title
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-  doc.text('BICOL UNIVERSITY', margin, 22);
+  doc.text('BICOL UNIVERSITY', margin, y);
   
-  doc.setFontSize(12);
+  y += 6;
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('LATIN HONORS REPORT', margin, 30);
+  doc.setTextColor(107, 114, 128);
+  doc.text('LATIN HONORS REPORT', margin, y);
   
-  y = 50;
-  doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+  y += 5;
+  doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+  doc.line(margin, y, 210 - margin, y);
 
-  // Student Info Box
+  y += 12;
+
+  // Student Info
   if (userName) {
-    doc.setFontSize(14);
+    doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text(`Student Name: ${userName}`, margin, y);
     y += 10;
   }
 
-  // Result Summary Box
+  // Result Summary Box (Minimalist Outline + Light Fill)
   doc.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
-  doc.rect(margin, y, 170, 35, 'F');
+  doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+  doc.rect(margin, y, 170, 28, 'FD');
   
-  y += 10;
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`Cumulative GWA: ${formatGWA(evaluation.gwaResult.gwa)}`, margin + 5, y);
   y += 8;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+  doc.text(`Cumulative GWA: ${formatGWA(evaluation.gwaResult.gwa)}`, margin + 6, y);
+  
+  y += 6;
   doc.setFont('helvetica', 'normal');
-  doc.text(`Total Academic Units: ${evaluation.gwaResult.totalAcademicUnits}`, margin + 5, y);
-  y += 8;
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  doc.text(`Status: ${evaluation.honorLabel || 'No Honors'}`, margin + 5, y);
   doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+  doc.text(`Total Academic Units: ${evaluation.gwaResult.totalAcademicUnits}`, margin + 6, y);
+  
+  y += 6;
+  doc.setFont('helvetica', 'bold');
+  doc.text(`Latin Honors Status: ${evaluation.honorLabel || 'No Honors'}`, margin + 6, y);
 
-  y += 20;
+  y += 18;
 
   // Semester summaries
   for (const summary of evaluation.semesterSummaries) {
@@ -194,52 +218,60 @@ export function exportCumulativePDF(
     }
 
     doc.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
-    doc.rect(margin, y - 5, 170, 12, 'F');
-    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
-
-    doc.setFontSize(11);
+    doc.setDrawColor(borderGray[0], borderGray[1], borderGray[2]);
+    doc.rect(margin, y - 5, 170, 10, 'FD');
+    
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
-    doc.text(summary.semesterName, margin + 2, y + 2);
-    y += 10;
+    doc.text(summary.semesterName, margin + 4, y + 1.5);
+    
+    y += 9;
 
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setFont('helvetica', 'normal');
-    doc.text(`GWA: ${formatGWA(summary.gwa)}`, margin + 4, y);
-    doc.text(`Units: ${summary.totalUnits}`, 80, y);
-    doc.text(`Subjects: ${summary.subjectCount}`, 120, y);
+    doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+    doc.text(`Semester GWA: ${formatGWA(summary.gwa)}`, margin + 4, y);
+    doc.text(`Academic Units: ${summary.totalUnits}`, 80, y);
+    doc.text(`Subjects count: ${summary.subjectCount}`, 120, y);
+    
     if (summary.hasIssues) {
-      doc.setTextColor(220, 50, 50);
-      doc.text('⚠ Has disqualifying grades', 155, y);
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(220, 50, 50); // Muted red
+      doc.setFont('helvetica', 'bold');
+      doc.text('⚠ Disqualifying grade present', 150, y);
+      doc.setTextColor(textColor[0], textColor[1], textColor[2]);
+      doc.setFont('helvetica', 'normal');
     }
+    
     y += 5;
 
-    // Individual subjects for this semester
+    // Individual subjects list for this semester
     const semester = semesters.find((s) => s.id === summary.semesterId);
     if (semester) {
-      for (const subject of semester.subjects.filter((s) => s.grade !== '')) {
+      const activeSubjects = semester.subjects.filter((s) => s.grade !== '');
+      activeSubjects.forEach((subject, idx) => {
         if (y > 270) {
           doc.addPage();
           y = margin;
         }
         doc.setFontSize(8);
         doc.text(
-          `   ${subject.subjectCode || '(No code)'} — ${subject.units}u — ${subject.grade}${subject.isNstp ? ' (NSTP)' : ''}`,
+          `   Subject #${idx + 1} — ${subject.units} unit${subject.units > 1 ? 's' : ''} — Grade: ${subject.grade}${subject.isNstp ? ' (NSTP Excluded)' : ''}`,
           margin + 4,
           y
         );
-        y += 4;
-      }
+        y += 4.5;
+      });
     }
-    y += 6;
+    y += 5;
   }
 
   // Footer
   y += 5;
   doc.setFontSize(8);
-  doc.setTextColor(150, 150, 150);
+  doc.setTextColor(156, 163, 175);
   doc.text(
-    `Generated by BU Calculator — ${new Date().toLocaleDateString()}`,
+    `Generated via BU GWA Calculator · ${new Date().toLocaleDateString()}`,
     margin,
     y
   );
