@@ -5,17 +5,13 @@
 
 import { useState } from 'react';
 import {
-  Smartphone,
   Download,
-  WifiOff,
-  Zap,
-  HardDrive,
   ChevronDown,
   ChevronUp,
   Shield,
-  RefreshCw,
   CheckCircle2,
   AlertCircle,
+  ExternalLink,
 } from 'lucide-react';
 
 // ── Config ──────────────────────────────────────────────────────────────────
@@ -31,31 +27,19 @@ const isApkReady = true;
 // ── Feature Cards Data ───────────────────────────────────────────────────────
 const features = [
   {
-    icon: WifiOff,
     title: 'Works 100% Offline',
     description:
       'No internet required after installation. Compute your GWA anytime, anywhere — even with no signal or mobile data.',
-    color: 'text-forest-600 dark:text-sage-400',
-    bg: 'bg-forest-50 dark:bg-forest-900/30',
-    border: 'border-forest-100 dark:border-forest-700',
   },
   {
-    icon: Zap,
     title: 'Fast & Lightweight',
     description:
       `Only ${APK_SIZE_MB}. Installs in seconds and launches instantly. No heavy frameworks, no bloat.`,
-    color: 'text-amber-600 dark:text-amber-400',
-    bg: 'bg-amber-50 dark:bg-amber-900/20',
-    border: 'border-amber-100 dark:border-amber-700',
   },
   {
-    icon: HardDrive,
     title: 'Auto-Saves Your Data',
     description:
       'All your subjects, semesters, and custom rules are saved locally on your device. Your data is never sent to any server.',
-    color: 'text-blue-600 dark:text-blue-400',
-    bg: 'bg-blue-50 dark:bg-blue-900/20',
-    border: 'border-blue-100 dark:border-blue-700',
   },
 ];
 
@@ -170,17 +154,8 @@ export function DownloadPage() {
       </div>
 
       {/* ── Hero Card ── */}
-      <div className="card border-forest-100 dark:border-forest-800">
+      <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-          {/* App Icon */}
-          <div className="flex-shrink-0 w-16 h-16 rounded-[20px] bg-forest-50 dark:bg-forest-900/40 border-0 flex items-center justify-center shadow-sm">
-            <img
-              src="/favicon/favicon.svg"
-              alt="BUeño Calculator App Icon"
-              className="w-12 h-12 object-contain"
-            />
-          </div>
-
           {/* App Info */}
           <div className="flex-1 min-w-0">
             <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -258,25 +233,19 @@ export function DownloadPage() {
           Why use the app?
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {features.map((feature) => {
-            const Icon = feature.icon;
-            return (
+          {features.map((feature) => (
               <div
                 key={feature.title}
-                className={`card ${feature.bg} ${feature.border} !bg-opacity-50`}
+                className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800"
               >
-                <div className={`w-8 h-8 rounded-sm ${feature.bg} border ${feature.border} flex items-center justify-center mb-3`}>
-                  <Icon className={`w-4 h-4 ${feature.color}`} />
-                </div>
-                <h4 className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-100 mb-1">
+                <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1.5">
                   {feature.title}
                 </h4>
-                <p className="text-xs text-charcoal-400 dark:text-charcoal-500 leading-relaxed">
+                <p className="text-xs text-charcoal-500 dark:text-charcoal-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
-            );
-          })}
+            ))}
         </div>
       </div>
 
@@ -319,61 +288,51 @@ export function DownloadPage() {
       </div>
 
       {/* ── PWA Alternative ── */}
-      <div className="card bg-sage-50 dark:bg-sage-900/20 border-sage-100 dark:border-sage-800 !bg-opacity-60">
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-8 h-8 rounded-sm bg-sage-100 dark:bg-sage-800/50 border border-sage-200 dark:border-sage-700 flex items-center justify-center">
-            <Smartphone className="w-4 h-4 text-sage-600 dark:text-sage-400" />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-100 mb-1">
-              No APK? Install from Chrome instead
-            </h4>
-            <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed mb-3">
-              You can also install this website directly as an app from your Chrome browser — no APK download needed. It works offline too!
-            </p>
-            <ol className="space-y-1.5">
-              {[
-                'Open this website in Chrome on your Android phone',
-                'Tap the ⋮ (three-dot menu) in the top-right corner',
-                'Tap "Add to Home screen" or "Install app"',
-                'Tap "Install" to confirm',
-                'Find BUeño Calculator on your home screen!',
-              ].map((step, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-charcoal-500 dark:text-charcoal-400">
-                  <span className="flex-shrink-0 w-4 h-4 rounded-full bg-sage-200 dark:bg-sage-800 text-sage-700 dark:text-sage-300 text-[10px] font-bold flex items-center justify-center mt-0.5">
-                    {i + 1}
-                  </span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </div>
+      <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800">
+        <div>
+          <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1">
+            No APK? Install from Chrome instead
+          </h4>
+          <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed mb-3">
+            You can also install this website directly as an app from your Chrome browser — no APK download needed. It works offline too!
+          </p>
+          <ol className="space-y-1.5 mt-4">
+            {[
+              'Open this website in Chrome on your Android phone',
+              'Tap the ⋮ (three-dot menu) in the top-right corner',
+              'Tap "Add to Home screen" or "Install app"',
+              'Tap "Install" to confirm',
+              'Find BUeño Calculator on your home screen!',
+            ].map((step, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-charcoal-500 dark:text-charcoal-400">
+                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-600 dark:text-charcoal-300 text-[10px] font-bold flex items-center justify-center mt-0.5">
+                  {i + 1}
+                </span>
+                {step}
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
 
       {/* ── Updates Section ── */}
-      <div className="card">
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-8 h-8 rounded-sm bg-charcoal-50 dark:bg-charcoal-700 border border-charcoal-100 dark:border-charcoal-600 flex items-center justify-center">
-            <RefreshCw className="w-4 h-4 text-charcoal-500 dark:text-charcoal-400" />
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-charcoal-700 dark:text-charcoal-100 mb-1">
-              How updates work
-            </h4>
-            <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed">
-              When a new version is available, it will appear on this page and on our{' '}
-              <a
-                href={GITHUB_RELEASES_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-forest-600 dark:text-sage-400 hover:underline font-medium"
-              >
-                GitHub Releases
-              </a>
-              . Simply download the new APK and install it over the existing one — your data is always preserved.
-            </p>
-          </div>
+      <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800">
+        <div>
+          <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1">
+            How updates work
+          </h4>
+          <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed">
+            When a new version is available, it will appear on this page and on our{' '}
+            <a
+              href={GITHUB_RELEASES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-forest-600 dark:text-sage-400 hover:underline font-medium"
+            >
+              GitHub Releases
+            </a>
+            . Simply download the new APK and install it over the existing one — your data is always preserved.
+          </p>
         </div>
       </div>
 
