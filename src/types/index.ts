@@ -112,7 +112,7 @@ export const DEFAULT_RULES: HonorsRules = {
 };
 
 /** Navigation views */
-export type View = 'semester' | 'cumulative' | 'settings';
+export type View = 'semester' | 'cumulative' | 'settings' | 'download';
 
 /** App-level state */
 export interface AppState {

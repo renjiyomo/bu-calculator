@@ -3,7 +3,7 @@
 // Navigation between the three tools
 // ========================================
 
-import { Calculator, GraduationCap, Settings, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Calculator, GraduationCap, Settings, PanelLeftClose, PanelLeftOpen, Smartphone } from 'lucide-react';
 import { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import type { View } from '../../types';
@@ -28,6 +28,13 @@ const navItems: { view: View; label: string; icon: typeof Calculator; descriptio
     description: 'Rules & Cutoffs',
   },
 ];
+
+const downloadNavItem = {
+  view: 'download' as View,
+  label: 'Download App',
+  icon: Smartphone,
+  description: 'Android APK',
+};
 
 export function Sidebar() {
   const { activeView, setActiveView, hasCustomRules } = useApp();
@@ -94,6 +101,47 @@ export function Sidebar() {
               </button>
             );
           })}
+
+          {/* Divider */}
+          <div className={`my-2 border-t border-charcoal-100 dark:border-charcoal-700 ${collapsed ? 'mx-2' : 'mx-1'}`} />
+
+          {/* Download App nav item */}
+          {(() => {
+            const isActive = activeView === downloadNavItem.view;
+            const Icon = downloadNavItem.icon;
+            return (
+              <button
+                onClick={() => setActiveView(downloadNavItem.view)}
+                className={`w-full ${
+                  isActive ? 'sidebar-item-active' : 'sidebar-item'
+                } ${collapsed ? 'justify-center px-2' : ''}`}
+                id="nav-download"
+                title={collapsed ? downloadNavItem.label : undefined}
+              >
+                <Icon className="w-4.5 h-4.5 flex-shrink-0" />
+                {!collapsed && (
+                  <div className="text-left">
+                    <div className="leading-tight">{downloadNavItem.label}</div>
+                    <div
+                      className={`text-2xs leading-tight mt-0.5 ${
+                        isActive
+                          ? 'text-white/70'
+                          : 'text-charcoal-300 dark:text-charcoal-500'
+                      }`}
+                    >
+                      {downloadNavItem.description}
+                    </div>
+                  </div>
+                )}
+                {/* APK ready badge */}
+                {!collapsed && (
+                  <span className="ml-auto inline-flex items-center px-1.5 py-0.5 text-[9px] font-semibold rounded-sm bg-sage-100 dark:bg-sage-900/50 text-sage-700 dark:text-sage-300 border border-sage-200 dark:border-sage-700 flex-shrink-0">
+                    APK
+                  </span>
+                )}
+              </button>
+            );
+          })()}
         </nav>
 
         {/* Footer info */}
@@ -109,21 +157,24 @@ export function Sidebar() {
 
       {/* Mobile Bottom Nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-charcoal-800 border-t border-charcoal-100 dark:border-charcoal-700 flex">
-        {navItems.map((item) => {
+        {[...navItems, downloadNavItem].map((item) => {
           const isActive = activeView === item.view;
           const Icon = item.icon;
           return (
             <button
               key={item.view}
               onClick={() => setActiveView(item.view)}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 px-2 text-2xs font-medium transition-colors ${
+              className={`flex-1 flex flex-col items-center gap-1 py-3 px-1 text-2xs font-medium transition-colors ${
                 isActive
                   ? 'text-forest-700 dark:text-sage-400'
                   : 'text-charcoal-400 dark:text-charcoal-500'
               }`}
+              id={`mobile-nav-${item.view}`}
             >
               <Icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <span className="leading-tight text-center">
+                {item.view === 'download' ? 'Download' : item.label.split(' ')[0]}
+              </span>
             </button>
           );
         })}

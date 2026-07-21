@@ -6,6 +6,7 @@ import { Layout } from './components/layout/Layout';
 import { SemesterCalculator } from './components/semester/SemesterCalculator';
 import { CumulativeCalculator } from './components/cumulative/CumulativeCalculator';
 import { RulesEngine } from './components/settings/RulesEngine';
+import { DownloadPage } from './components/download/DownloadPage';
 import { useApp } from './context/AppContext';
 
 function AppContent() {
@@ -16,6 +17,7 @@ function AppContent() {
       {activeView === 'semester' && <SemesterCalculator />}
       {activeView === 'cumulative' && <CumulativeCalculator />}
       {activeView === 'settings' && <RulesEngine />}
+      {activeView === 'download' && <DownloadPage />}
     </Layout>
   );
 }
