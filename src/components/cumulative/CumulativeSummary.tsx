@@ -6,7 +6,7 @@
 import type { LatinHonorsEvaluation } from '../../types';
 import { formatGWA } from '../../utils/bu-computation';
 import { HonorBadge } from '../shared/Badge';
-import { Hash, BookOpen, AlertCircle, Maximize2 } from 'lucide-react';
+import { AlertCircle, Maximize2 } from 'lucide-react';
 import { ShareModal } from '../shared/ShareModal';
 import { useApp } from '../../context/AppContext';
 import { useState } from 'react';

@@ -6,7 +6,7 @@
 import type { SemesterEvaluation, Subject } from '../../types';
 import { formatGWA } from '../../utils/bu-computation';
 import { HonorBadge } from '../shared/Badge';
-import { TrendingUp, Hash, Weight, Maximize2 } from 'lucide-react';
+import { Maximize2 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { ShareModal } from '../shared/ShareModal';
 import { useState } from 'react';
