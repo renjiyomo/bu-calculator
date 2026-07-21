@@ -115,7 +115,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const params = new URLSearchParams(window.location.search);
     const apkVersion = params.get('apkVersion');
     if (apkVersion) {
-      localStorage.setItem('bueno_installed_apk_version', apkVersion);
+      sessionStorage.setItem('bueno_installed_apk_version', apkVersion);
       // Clean up the URL so it doesn't stay in the address bar
       window.history.replaceState({}, document.title, window.location.pathname);
     }

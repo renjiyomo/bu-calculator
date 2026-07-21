@@ -178,9 +178,15 @@ export function DownloadPage() {
   const [lastDownloadedVersion, setLastDownloadedVersion] = useState<string | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('bueno_installed_apk_version');
+    // Check both sessionStorage (new method) and fallback to clean up old localStorage
+    const saved = sessionStorage.getItem('bueno_installed_apk_version');
     if (saved) {
       setLastDownloadedVersion(saved);
+    } else {
+      // If we are on an old version that doesn't set sessionStorage, make sure we aren't
+      // tricked by a stale localStorage value from a previous installation.
+      localStorage.removeItem('bueno_installed_apk_version');
+      localStorage.removeItem('bueno_last_apk_version');
     }
   }, []);
 
