@@ -24,7 +24,7 @@ import {
 // after you build and upload your APK (see docs/android-build-guide.md).
 const APK_DOWNLOAD_URL = 'https://github.com/renjiyomo/bu-calculator/releases/download/v1.0.0/bueno-calculator.apk';
 const APK_VERSION = '1.0.0';
-const APK_SIZE_MB = '2.17 MB';
+const APK_SIZE_MB = '2.28 MB';
 const GITHUB_RELEASES_URL = 'https://github.com/renjiyomo/bu-calculator/releases';
 
 const isApkReady = true;
