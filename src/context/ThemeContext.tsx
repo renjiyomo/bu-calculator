@@ -26,14 +26,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    // Add transition class to body to force smooth animations globally during switch
-    document.documentElement.classList.add('theme-transitioning');
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    const doc = document;
+
+    if ('startViewTransition' in doc && typeof (doc as any).startViewTransition === 'function') {
+      (doc as any).startViewTransition(() => {
+        setTheme(nextTheme);
+      });
+      return;
+    }
+
+    doc.documentElement.classList.add('theme-transitioning');
+    setTheme(nextTheme);
     
-    // Remove the class after transition completes
     setTimeout(() => {
-      document.documentElement.classList.remove('theme-transitioning');
-    }, 400);
+      doc.documentElement.classList.remove('theme-transitioning');
+    }, 250);
   };
 
   return (
