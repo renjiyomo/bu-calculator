@@ -3,7 +3,8 @@
 // Android APK download & installation guide
 // ========================================
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useApp } from '../../context/AppContext';
 import {
   Download,
   ChevronDown,
@@ -74,6 +75,38 @@ const installSteps = [
   },
 ];
 
+// ── Update Steps Data (For In-App Users) ────────────────────────────────────
+const updateSteps = [
+  {
+    number: 1,
+    title: 'Download the Update',
+    description:
+      'Tap "Update App" above. Your phone will download the latest bueno-calculator.apk to your Downloads folder.',
+    tip: 'Your saved data (semesters, subjects, rules) will NOT be lost during this update.',
+  },
+  {
+    number: 2,
+    title: 'Open the New File',
+    description:
+      'Open your phone\'s file manager or notification drawer and tap the downloaded APK file.',
+    tip: 'On most Android phones, you can find it at: Files → Downloads → bueno-calculator.apk',
+  },
+  {
+    number: 3,
+    title: 'Install the Update',
+    description:
+      'Android will ask if you want to install an update to this existing application. Tap "Update" or "Install".',
+    tip: 'If prompted for security, simply tap "Settings" and enable "Install from this source".',
+  },
+  {
+    number: 4,
+    title: 'Restart the App',
+    description:
+      'Once installed, tap "Open". You are now running the latest version with all your previous data intact!',
+    tip: 'You can check your current version badge at the top of this page.',
+  },
+];
+
 // ── FAQ Data ─────────────────────────────────────────────────────────────────
 const faqs = [
   {
@@ -139,16 +172,38 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 // ── Main Component ───────────────────────────────────────────────────────────
 export function DownloadPage() {
+  const { isPWA } = useApp();
+  
+  // Track the downloaded version in localStorage
+  const [lastDownloadedVersion, setLastDownloadedVersion] = useState<string | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('bueno_last_apk_version');
+    if (saved) {
+      setLastDownloadedVersion(saved);
+    }
+  }, []);
+
+  const handleDownloadClick = () => {
+    // When they click download or update, save the current APK_VERSION as their installed version
+    localStorage.setItem('bueno_last_apk_version', APK_VERSION);
+    setLastDownloadedVersion(APK_VERSION);
+  };
+
+  const isUpdateAvailable = lastDownloadedVersion !== APK_VERSION;
+
   return (
     <div className="space-y-8 animate-fade-in">
 
       {/* ── Page Header ── */}
       <div>
         <h2 className="text-xl font-bold text-charcoal-800 dark:text-charcoal-50">
-          Download for Android
+          {isPWA ? 'App Updates' : 'Download for Android'}
         </h2>
         <p className="text-sm text-charcoal-400 dark:text-charcoal-500 mt-1">
-          Take BUeño Calculator offline — install the app directly on your Android device.
+          {isPWA 
+            ? 'Check for new features, bug fixes, and download the latest version.' 
+            : 'Take BUeño Calculator offline — install the app directly on your Android device.'}
         </p>
       </div>
 
@@ -187,18 +242,30 @@ export function DownloadPage() {
             </div>
           </div>
 
-          {/* Download Button */}
+          {/* Download / Update Button */}
           <div className="flex flex-col items-start sm:items-end gap-2 flex-shrink-0 w-full sm:w-auto">
             {isApkReady ? (
-              <a
-                href={APK_DOWNLOAD_URL}
-                download
-                id="btn-download-apk"
-                className="btn-primary gap-2 w-full sm:w-auto justify-center px-6 py-2.5 text-sm"
-              >
-                <Download className="w-4 h-4" />
-                Download APK
-              </a>
+              isPWA && !isUpdateAvailable ? (
+                <button
+                  disabled
+                  id="btn-latest-version"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 text-sm font-medium rounded-full cursor-not-allowed w-full sm:w-auto border border-charcoal-200 dark:border-charcoal-600"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  Latest Version
+                </button>
+              ) : (
+                <a
+                  href={APK_DOWNLOAD_URL}
+                  download
+                  onClick={handleDownloadClick}
+                  id="btn-download-apk"
+                  className="btn-primary gap-2 w-full sm:w-auto justify-center px-6 py-2.5 text-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  {isPWA ? 'Update App' : 'Download APK'}
+                </a>
+              )
             ) : (
               <button
                 disabled
@@ -227,38 +294,40 @@ export function DownloadPage() {
       </div>
 
       {/* ── Feature Cards ── */}
-      <div>
-        <h3 className="text-sm font-semibold text-charcoal-600 dark:text-charcoal-300 mb-3 uppercase tracking-wide text-xs">
-          Why use the app?
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800"
-              >
-                <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1.5">
-                  {feature.title}
-                </h4>
-                <p className="text-xs text-charcoal-500 dark:text-charcoal-400 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
+      {!isPWA && (
+        <div>
+          <h3 className="text-sm font-semibold text-charcoal-600 dark:text-charcoal-300 mb-3 uppercase tracking-wide text-xs">
+            Why use the app?
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {features.map((feature) => (
+                <div
+                  key={feature.title}
+                  className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800"
+                >
+                  <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1.5">
+                    {feature.title}
+                  </h4>
+                  <p className="text-xs text-charcoal-500 dark:text-charcoal-400 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* ── Installation Guide ── */}
+      {/* ── Installation / Update Guide ── */}
       <div>
         <h3 className="text-sm font-semibold text-charcoal-600 dark:text-charcoal-300 mb-3 uppercase tracking-wide text-xs">
-          How to install
+          {isPWA ? 'How to update' : 'How to install'}
         </h3>
         <div className="card space-y-0 !p-0 overflow-hidden">
-          {installSteps.map((step, index) => (
+          {(isPWA ? updateSteps : installSteps).map((step, index) => (
             <div
               key={step.number}
               className={`flex gap-4 px-5 py-4 ${
-                index !== installSteps.length - 1
+                index !== (isPWA ? updateSteps : installSteps).length - 1
                   ? 'border-b border-charcoal-100 dark:border-charcoal-700'
                   : ''
               }`}
@@ -287,32 +356,34 @@ export function DownloadPage() {
       </div>
 
       {/* ── PWA Alternative ── */}
-      <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800">
-        <div>
-          <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1">
-            No APK? Install from Chrome instead
-          </h4>
-          <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed mb-3">
-            You can also install this website directly as an app from your Chrome browser — no APK download needed. It works offline too!
-          </p>
-          <ol className="space-y-1.5 mt-4">
-            {[
-              'Open this website in Chrome on your Android phone',
-              'Tap the ⋮ (three-dot menu) in the top-right corner',
-              'Tap "Add to Home screen" or "Install app"',
-              'Tap "Install" to confirm',
-              'Find BUeño Calculator on your home screen!',
-            ].map((step, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-charcoal-500 dark:text-charcoal-400">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-600 dark:text-charcoal-300 text-[10px] font-bold flex items-center justify-center mt-0.5">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
+      {!isPWA && (
+        <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800">
+          <div>
+            <h4 className="text-sm font-bold text-charcoal-800 dark:text-charcoal-100 mb-1">
+              No APK? Install from Chrome instead
+            </h4>
+            <p className="text-sm text-charcoal-500 dark:text-charcoal-400 leading-relaxed mb-3">
+              You can also install this website directly as an app from your Chrome browser — no APK download needed. It works offline too!
+            </p>
+            <ol className="space-y-1.5 mt-4">
+              {[
+                'Open this website in Chrome on your Android phone',
+                'Tap the ⋮ (three-dot menu) in the top-right corner',
+                'Tap "Add to Home screen" or "Install app"',
+                'Tap "Install" to confirm',
+                'Find BUeño Calculator on your home screen!',
+              ].map((step, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-charcoal-500 dark:text-charcoal-400">
+                  <span className="flex-shrink-0 w-4 h-4 rounded-full bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-600 dark:text-charcoal-300 text-[10px] font-bold flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  {step}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── Updates Section ── */}
       <div className="card shadow-sm border border-charcoal-100/50 dark:border-charcoal-700/50 bg-white dark:bg-charcoal-800">

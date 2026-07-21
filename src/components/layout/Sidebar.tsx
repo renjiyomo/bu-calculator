@@ -105,10 +105,13 @@ export function Sidebar() {
           {/* Divider */}
           <div className={`my-2 border-t border-charcoal-100 dark:border-charcoal-700 ${collapsed ? 'mx-2' : 'mx-1'}`} />
 
-          {/* Download App nav item */}
-          {!isPWA && (() => {
+          {/* Download/Updates App nav item */}
+          {(() => {
             const isActive = activeView === downloadNavItem.view;
             const Icon = downloadNavItem.icon;
+            const displayLabel = isPWA ? 'App Updates' : downloadNavItem.label;
+            const displayDesc = isPWA ? 'Check for updates' : downloadNavItem.description;
+
             return (
               <button
                 onClick={() => setActiveView(downloadNavItem.view)}
@@ -116,12 +119,12 @@ export function Sidebar() {
                   isActive ? 'sidebar-item-active' : 'sidebar-item'
                 } ${collapsed ? 'justify-center px-2' : ''}`}
                 id="nav-download"
-                title={collapsed ? downloadNavItem.label : undefined}
+                title={collapsed ? displayLabel : undefined}
               >
                 <Icon className="w-4.5 h-4.5 flex-shrink-0" />
                 {!collapsed && (
                   <div className="text-left">
-                    <div className="leading-tight">{downloadNavItem.label}</div>
+                    <div className="leading-tight">{displayLabel}</div>
                     <div
                       className={`text-2xs leading-tight mt-0.5 ${
                         isActive
@@ -129,7 +132,7 @@ export function Sidebar() {
                           : 'text-charcoal-300 dark:text-charcoal-500'
                       }`}
                     >
-                      {downloadNavItem.description}
+                      {displayDesc}
                     </div>
                   </div>
                 )}
@@ -157,7 +160,7 @@ export function Sidebar() {
 
       {/* Mobile Bottom Nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-charcoal-800/80 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.03)] dark:shadow-none flex pb-[env(safe-area-inset-bottom)] transition-colors duration-200">
-        {[...navItems, ...(isPWA ? [] : [downloadNavItem])].map((item) => {
+        {[...navItems, downloadNavItem].map((item) => {
           const isActive = activeView === item.view;
           const Icon = item.icon;
           return (
@@ -171,7 +174,7 @@ export function Sidebar() {
                 <Icon className="w-5 h-5" />
               </div>
               <span className={`text-[10px] font-medium leading-tight text-center transition-colors duration-200 ${isActive ? 'text-forest-700 dark:text-sage-400' : 'text-charcoal-400 dark:text-charcoal-500'}`}>
-                {item.view === 'download' ? 'Download' : item.label.split(' ')[0]}
+                {item.view === 'download' ? (isPWA ? 'Updates' : 'Download') : item.label.split(' ')[0]}
               </span>
             </button>
           );
