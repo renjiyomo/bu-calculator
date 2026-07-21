@@ -45,7 +45,7 @@ function safeSetItem(key: string, value: unknown): void {
 
 export function loadSemesterSubjects(): Subject[] {
   const subjects = safeGetItem<Subject[]>(STORAGE_KEYS.SEMESTER_SUBJECTS, []);
-  return subjects.length > 0 ? subjects : [createEmptySubject()];
+  return subjects.length > 0 ? subjects : [createEmptySubject(), createEmptySubject()];
 }
 
 export function saveSemesterSubjects(subjects: Subject[]): void {
@@ -60,7 +60,10 @@ export function loadSemesters(): Semester[] {
   const semesters = safeGetItem<Semester[]>(STORAGE_KEYS.SEMESTERS, []);
   return semesters.length > 0
     ? semesters
-    : [createEmptySemester('Year 1 — Semester 1')];
+    : [
+        createEmptySemester('Year 1 — Semester 1'),
+        createEmptySemester('Year 1 — Semester 2'),
+      ];
 }
 
 export function saveSemesters(semesters: Semester[]): void {
@@ -75,7 +78,10 @@ export function loadQuickSemesters(): QuickSemester[] {
   const qs = safeGetItem<QuickSemester[]>(STORAGE_KEYS.QUICK_SEMESTERS, []);
   return qs.length > 0
     ? qs
-    : [createEmptyQuickSemester('Year 1 — Semester 1')];
+    : [
+        createEmptyQuickSemester('Year 1 — Semester 1'),
+        createEmptyQuickSemester('Year 1 — Semester 2'),
+      ];
 }
 
 export function saveQuickSemesters(quickSemesters: QuickSemester[]): void {

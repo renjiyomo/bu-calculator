@@ -163,7 +163,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const removeSemesterSubject = useCallback((id: string) => {
     setSemesterSubjectsState((prev) => {
       const filtered = prev.filter((s) => s.id !== id);
-      return filtered.length > 0 ? filtered : [createEmptySubject()];
+      return filtered.length > 0 ? filtered : [createEmptySubject(), createEmptySubject()];
     });
   }, []);
 
@@ -177,7 +177,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const clearSemesterSubjects = useCallback(() => {
-    setSemesterSubjectsState([createEmptySubject()]);
+    setSemesterSubjectsState([createEmptySubject(), createEmptySubject()]);
   }, []);
 
   // ---- Tool B: Cumulative semesters (detailed mode) ----
@@ -197,7 +197,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const filtered = prev.filter((s) => s.id !== id);
       return filtered.length > 0
         ? filtered
-        : [createEmptySemester('Year 1 — Semester 1')];
+        : [
+            createEmptySemester('Year 1 — Semester 1'),
+            createEmptySemester('Year 1 — Semester 2'),
+          ];
     });
   }, []);
 
@@ -262,7 +265,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const clearAllSemesters = useCallback(() => {
-    setSemestersState([createEmptySemester('Year 1 — Semester 1')]);
+    setSemestersState([
+      createEmptySemester('Year 1 — Semester 1'),
+      createEmptySemester('Year 1 — Semester 2'),
+    ]);
   }, []);
 
   // ---- Tool B: Quick semesters ----
@@ -282,7 +288,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const filtered = prev.filter((s) => s.id !== id);
       return filtered.length > 0
         ? filtered
-        : [createEmptyQuickSemester('Year 1 — Semester 1')];
+        : [
+            createEmptyQuickSemester('Year 1 — Semester 1'),
+            createEmptyQuickSemester('Year 1 — Semester 2'),
+          ];
     });
   }, []);
 
@@ -296,7 +305,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const clearQuickSemesters = useCallback(() => {
-    setQuickSemestersState([createEmptyQuickSemester('Year 1 — Semester 1')]);
+    setQuickSemestersState([
+      createEmptyQuickSemester('Year 1 — Semester 1'),
+      createEmptyQuickSemester('Year 1 — Semester 2'),
+    ]);
   }, []);
 
   // ---- Tool C: Rules ----
