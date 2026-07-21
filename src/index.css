@@ -5,9 +5,9 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   /* Default light mode */
@@ -63,6 +63,7 @@
     margin: 0;
   }
   input[type='number'] {
+    appearance: textfield;
     -moz-appearance: textfield;
   }
 }
