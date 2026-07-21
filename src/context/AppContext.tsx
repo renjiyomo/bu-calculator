@@ -110,12 +110,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const isPWA = useIsPWA();
 
   // ---- PWA Redirect ----
-  // If the app is installed, prevent the user from viewing the "download" page
-  useEffect(() => {
-    if (isPWA && activeView === 'download') {
-      setActiveViewState('semester');
-    }
-  }, [isPWA, activeView]);
+  // (Removed: We now allow PWA/TWA users to access the download page for updates)
 
   // ---- Persist on every change ----
   useEffect(() => {
