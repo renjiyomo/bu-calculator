@@ -3,7 +3,7 @@
 // Navigation between the three tools
 // ========================================
 
-import { Calculator, GraduationCap, Settings, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calculator, GraduationCap, Settings, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import type { View } from '../../types';
@@ -45,13 +45,13 @@ export function Sidebar() {
         <div className="flex justify-end p-2">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="btn-ghost p-1.5"
+            className="btn-ghost p-1.5 text-charcoal-400 hover:text-charcoal-700 dark:hover:text-charcoal-200 transition-colors"
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {collapsed ? (
-              <ChevronRight className="w-4 h-4" />
+              <PanelLeftOpen className="w-5 h-5" />
             ) : (
-              <ChevronLeft className="w-4 h-4" />
+              <PanelLeftClose className="w-5 h-5" />
             )}
           </button>
         </div>
@@ -98,9 +98,10 @@ export function Sidebar() {
 
         {/* Footer info */}
         {!collapsed && (
-          <div className="p-4 border-t border-charcoal-100 dark:border-charcoal-700">
-            <p className="text-2xs text-charcoal-300 dark:text-charcoal-500 leading-relaxed">
-              Based on the BU Student Handbook. For reference only.
+          <div className="p-4 border-t border-charcoal-100 dark:border-charcoal-700 mt-auto">
+            <p className="text-[10px] text-charcoal-400 dark:text-charcoal-500 leading-relaxed text-center opacity-80 hover:opacity-100 transition-opacity">
+              <strong>Note:</strong> This is an independent project and is not officially associated with or endorsed by Bicol University. 
+              Results are for reference only and should not be used as the official basis for determining honors. Please wait for official university announcements.
             </p>
           </div>
         )}

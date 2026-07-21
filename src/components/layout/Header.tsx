@@ -20,7 +20,7 @@ export function Header() {
         </div>
         <div className="hidden sm:block">
           <h1 className="text-sm font-bold text-charcoal-700 dark:text-charcoal-100 leading-tight">
-            BU Calculator
+            BUeño Calculator
           </h1>
           <p className="text-2xs text-charcoal-400 dark:text-charcoal-500 leading-tight">
             Bicol University GWA
