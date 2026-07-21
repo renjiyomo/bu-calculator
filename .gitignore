@@ -22,3 +22,19 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Security / Secrets
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.key
+*.pem
+
+# Binaries / Packages
+*.apk
+*.aab
+*.zip
+*.tar.gz
