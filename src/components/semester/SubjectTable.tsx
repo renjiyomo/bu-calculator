@@ -66,11 +66,11 @@ export function SubjectTable({
       <div className="border-t border-charcoal-100 dark:border-charcoal-700 px-3 py-2">
         <button
           onClick={onAdd}
-          className="btn-ghost text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 w-full justify-start"
+          className="btn-ghost text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 w-full justify-start min-h-[44px]"
           id="add-subject-btn"
         >
-          <Plus className="w-4 h-4" />
-          Add subject
+          <Plus className="w-5 h-5 sm:w-4 sm:h-4" />
+          <span className="text-sm sm:text-base">Add subject</span>
         </button>
       </div>
     </div>

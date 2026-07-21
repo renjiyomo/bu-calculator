@@ -56,10 +56,10 @@ export function RulesEngine() {
         {hasCustomRules && (
           <button
             onClick={resetRules}
-            className="btn-secondary text-xs"
+            className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0 justify-center w-full sm:w-auto"
             id="reset-rules-btn"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
             Reset to BU Defaults
           </button>
         )}
@@ -110,7 +110,7 @@ export function RulesEngine() {
                 onChange={(e) =>
                   handleCutoffChange('presidentListerMax', e.target.value)
                 }
-                className="input-field w-24 text-center tabular-nums"
+                className="input-field w-24 text-center tabular-nums min-h-[44px] sm:min-h-0"
                 id="president-max"
               />
               {rules.presidentListerMax !== DEFAULT_RULES.presidentListerMax && (
@@ -139,7 +139,7 @@ export function RulesEngine() {
                 onChange={(e) =>
                   handleCutoffChange('deanListerMax', e.target.value)
                 }
-                className="input-field w-24 text-center tabular-nums"
+                className="input-field w-24 text-center tabular-nums min-h-[44px] sm:min-h-0"
                 id="dean-max"
               />
               {rules.deanListerMax !== DEFAULT_RULES.deanListerMax && (
@@ -180,7 +180,7 @@ export function RulesEngine() {
                 onChange={(e) =>
                   handleCutoffChange('summaCumLaudeMax', e.target.value)
                 }
-                className="input-field w-24 text-center tabular-nums"
+                className="input-field w-24 text-center tabular-nums min-h-[44px] sm:min-h-0"
                 id="summa-max"
               />
             </div>
@@ -209,7 +209,7 @@ export function RulesEngine() {
                 onChange={(e) =>
                   handleCutoffChange('magnaCumLaudeMax', e.target.value)
                 }
-                className="input-field w-24 text-center tabular-nums"
+                className="input-field w-24 text-center tabular-nums min-h-[44px] sm:min-h-0"
                 id="magna-max"
               />
             </div>
@@ -238,7 +238,7 @@ export function RulesEngine() {
                 onChange={(e) =>
                   handleCutoffChange('cumLaudeMax', e.target.value)
                 }
-                className="input-field w-24 text-center tabular-nums"
+                className="input-field w-24 text-center tabular-nums min-h-[44px] sm:min-h-0"
                 id="cum-laude-max"
               />
             </div>
@@ -296,12 +296,12 @@ export function RulesEngine() {
             value={newGrade}
             onChange={(e) => setNewGrade(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addDisqualifyingGrade()}
-            className="input-field w-48"
+            className="input-field w-full sm:w-48 min-h-[44px] sm:min-h-0"
             id="new-disqualifying-grade"
           />
           <button
             onClick={addDisqualifyingGrade}
-            className="btn-secondary text-xs"
+            className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0"
             disabled={!newGrade.trim()}
           >
             <Plus className="w-3.5 h-3.5" />

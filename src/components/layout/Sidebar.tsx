@@ -37,7 +37,7 @@ const downloadNavItem = {
 };
 
 export function Sidebar() {
-  const { activeView, setActiveView, hasCustomRules } = useApp();
+  const { activeView, setActiveView, hasCustomRules, isPWA } = useApp();
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -106,7 +106,7 @@ export function Sidebar() {
           <div className={`my-2 border-t border-charcoal-100 dark:border-charcoal-700 ${collapsed ? 'mx-2' : 'mx-1'}`} />
 
           {/* Download App nav item */}
-          {(() => {
+          {!isPWA && (() => {
             const isActive = activeView === downloadNavItem.view;
             const Icon = downloadNavItem.icon;
             return (
@@ -156,23 +156,21 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-charcoal-800 border-t border-charcoal-100 dark:border-charcoal-700 flex">
-        {[...navItems, downloadNavItem].map((item) => {
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-charcoal-800 border-t border-charcoal-100 dark:border-charcoal-700 flex pb-[env(safe-area-inset-bottom)]">
+        {[...navItems, ...(isPWA ? [] : [downloadNavItem])].map((item) => {
           const isActive = activeView === item.view;
           const Icon = item.icon;
           return (
             <button
               key={item.view}
               onClick={() => setActiveView(item.view)}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 px-1 text-2xs font-medium transition-colors ${
-                isActive
-                  ? 'text-forest-700 dark:text-sage-400'
-                  : 'text-charcoal-400 dark:text-charcoal-500'
-              }`}
+              className="flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 relative"
               id={`mobile-nav-${item.view}`}
             >
-              <Icon className="w-5 h-5" />
-              <span className="leading-tight text-center">
+              <div className={`flex items-center justify-center w-16 h-8 rounded-full transition-colors duration-200 ${isActive ? 'bg-forest-100 dark:bg-sage-900/40 text-forest-700 dark:text-sage-400' : 'text-charcoal-400 dark:text-charcoal-500'}`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <span className={`text-[10px] font-medium leading-tight text-center transition-colors duration-200 ${isActive ? 'text-forest-700 dark:text-sage-400' : 'text-charcoal-400 dark:text-charcoal-500'}`}>
                 {item.view === 'download' ? 'Download' : item.label.split(' ')[0]}
               </span>
             </button>

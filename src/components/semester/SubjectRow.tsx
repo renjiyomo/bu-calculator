@@ -47,7 +47,7 @@ export function SubjectRow({
             <span className="text-[10px] font-bold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Exclude NSTP</span>
             <button
               onClick={() => onUpdate({ isNstp: !subject.isNstp })}
-              className={`inline-flex items-center justify-center px-2 py-1 rounded text-2xs font-semibold transition-all ${
+              className={`inline-flex items-center justify-center px-4 py-2 min-h-[32px] rounded-lg text-xs font-semibold transition-all ${
                 subject.isNstp
                   ? 'bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-400 border border-sage-200 dark:border-sage-700'
                   : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 border border-transparent'
@@ -61,10 +61,10 @@ export function SubjectRow({
           {showRemove && (
             <button
               onClick={onRemove}
-              className="text-red-500 hover:text-red-600 p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all"
+              className="text-red-500 hover:text-red-600 p-2 min-h-[44px] min-w-[44px] hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all flex items-center justify-center"
               aria-label="Remove subject"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-5 h-5" />
             </button>
           )}
         </div>
@@ -83,7 +83,7 @@ export function SubjectRow({
           onChange={(e) =>
             onUpdate({ units: Math.max(1, parseInt(e.target.value) || 1) })
           }
-          className="input-field text-sm text-center w-full"
+          className="input-field text-base sm:text-sm text-center w-full min-h-[44px] sm:min-h-0"
           id={`units-${subject.id}`}
         />
       </td>

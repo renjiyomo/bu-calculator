@@ -77,58 +77,6 @@ export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
             </div>
           </div>
 
-          {/* Quick stats (Mobile) */}
-          <div className="mt-6 pt-5 border-t border-charcoal-100 dark:border-charcoal-700 flex flex-col gap-4 sm:hidden">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-md bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
-                <Hash className="w-5 h-5 text-sage-600 dark:text-sage-400" />
-              </div>
-              <div>
-                <p className="text-xs text-charcoal-400 dark:text-charcoal-500">
-                  Total Academic Units
-                </p>
-                <p className="text-base font-semibold text-charcoal-700 dark:text-charcoal-200 tabular-nums">
-                  {gwaResult.totalAcademicUnits}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-md bg-sage-50 dark:bg-sage-900/30 flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-5 h-5 text-sage-600 dark:text-sage-400" />
-              </div>
-              <div>
-                <p className="text-xs text-charcoal-400 dark:text-charcoal-500">
-                  Semesters Included
-                </p>
-                <p className="text-base font-semibold text-charcoal-700 dark:text-charcoal-200 tabular-nums">
-                  {semesterSummaries.length}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick stats (Desktop/Web) */}
-          <div className="mt-5 pt-4 border-t border-charcoal-100 dark:border-charcoal-700 hidden sm:flex flex-wrap gap-6">
-            <div className="flex items-center gap-2">
-              <Hash className="w-4 h-4 text-sage-500" />
-              <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
-                <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
-                  {gwaResult.totalAcademicUnits}
-                </span>{' '}
-                total units
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-sage-500" />
-              <span className="text-sm text-charcoal-500 dark:text-charcoal-400">
-                <span className="font-semibold text-charcoal-700 dark:text-charcoal-200">
-                  {semesterSummaries.length}
-                </span>{' '}
-                semester{semesterSummaries.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
-
       {/* Disqualification notice */}
         {gwaResult.hasDisqualifyingGrades && (
           <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm">

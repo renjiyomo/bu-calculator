@@ -36,11 +36,13 @@ import {
   createEmptyQuickSemester,
   generateSemesterName,
 } from '../utils/bu-computation';
+import { useIsPWA } from '../hooks/useIsPWA';
 
 interface AppContextValue {
   // Navigation
   activeView: View;
   setActiveView: (view: View) => void;
+  isPWA: boolean;
 
   // User Profile
   userName: string;
@@ -105,6 +107,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
   const [rules, setRulesState] = useState<HonorsRules>(() => loadRules());
   const [userName, setUserNameState] = useState<string>(() => loadUserName());
+  const isPWA = useIsPWA();
+
+  // ---- PWA Redirect ----
+  // If the app is installed, prevent the user from viewing the "download" page
+  useEffect(() => {
+    if (isPWA && activeView === 'download') {
+      setActiveViewState('semester');
+    }
+  }, [isPWA, activeView]);
 
   // ---- Persist on every change ----
   useEffect(() => {
@@ -309,6 +320,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       value={{
         activeView,
         setActiveView,
+        isPWA,
         userName,
         setUserName,
         semesterSubjects,

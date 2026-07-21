@@ -50,18 +50,18 @@ export function SemesterCalculator() {
                 onClick={() =>
                   exportSemesterPDF(semesterSubjects, evaluation, userName)
                 }
-                className="btn-secondary text-xs"
+                className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0 flex-1 sm:flex-none justify-center"
                 id="export-semester-pdf"
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 Export PDF
               </button>
               <button
                 onClick={clearSemesterSubjects}
-                className="btn-secondary text-xs"
+                className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0 flex-1 sm:flex-none justify-center"
                 id="clear-semester"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 Clear
               </button>
             </>
@@ -80,7 +80,7 @@ export function SemesterCalculator() {
             About NSTP Subjects
           </p>
           <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-            National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Note that Physical Education (PE / PATHFIT) <strong>is included</strong> in the GWA. Toggle the button for NSTP subjects to exclude them.
+            National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Toggle the button for NSTP subjects to exclude them.
           </p>
         </div>
       </div>

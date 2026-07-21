@@ -44,7 +44,7 @@ export function GradeSelect({ value, onChange, isDisqualified, id }: GradeSelect
       id={id}
       value={String(value)}
       onChange={handleChange}
-      className={`select-field ${
+      className={`select-field min-h-[44px] sm:min-h-[2.5rem] text-base sm:text-sm ${
         isDisqualified
           ? 'border-red-400 bg-red-50 text-red-700 dark:border-red-500 dark:bg-red-900/30 dark:text-red-400'
           : ''

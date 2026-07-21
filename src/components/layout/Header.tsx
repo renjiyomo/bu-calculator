@@ -12,10 +12,10 @@ export function Header() {
   const { hasCustomRules } = useApp();
 
   return (
-    <header className="h-14 border-b border-charcoal-100 dark:border-charcoal-700 bg-white dark:bg-charcoal-800 flex items-center justify-between px-5 flex-shrink-0">
+    <header className="h-14 sm:h-16 border-b border-charcoal-100 dark:border-charcoal-700 bg-white/90 dark:bg-charcoal-800/90 backdrop-blur-md sticky top-0 z-40 flex items-center justify-between px-4 sm:px-5 flex-shrink-0">
       {/* Left: Branding */}
-      <div className="flex items-center gap-3">
-        <img src="/favicon/favicon.svg" alt="BUeño Calculator Logo" className="w-10 h-10 object-contain drop-shadow-sm" />
+      <div className="flex items-center gap-3 relative z-10 w-1/3">
+        <img src="/favicon/favicon.svg" alt="BUeño Calculator Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow-sm" />
         <div className="hidden sm:block">
           <h1 className="text-sm font-bold text-charcoal-700 dark:text-charcoal-100 leading-tight">
             BUeño Calculator
@@ -26,8 +26,15 @@ export function Header() {
         </div>
       </div>
 
+      {/* Center: Mobile Title (Native App Bar Style) */}
+      <div className="sm:hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+        <h1 className="text-[15px] font-semibold text-charcoal-800 dark:text-charcoal-100 tracking-tight">
+          BUeño Calculator
+        </h1>
+      </div>
+
       {/* Right: Controls */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2 relative z-10 w-1/3">
         {hasCustomRules && (
           <span className="hidden sm:inline-flex items-center gap-1 text-2xs font-medium text-collegiate-orange dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 px-2 py-1 rounded-sm">
             <Settings className="w-3 h-3" />

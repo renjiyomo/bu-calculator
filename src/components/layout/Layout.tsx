@@ -17,8 +17,8 @@ export function Layout({ children }: LayoutProps) {
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto custom-scrollbar pb-20 lg:pb-0">
-          <div className="max-w-5xl mx-auto p-5 md:p-8">
+        <main className="flex-1 overflow-y-auto custom-scrollbar pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0 relative">
+          <div className="max-w-5xl mx-auto p-4 sm:p-5 md:p-8 relative z-0">
             {children}
           </div>
         </main>

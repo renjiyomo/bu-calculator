@@ -90,7 +90,7 @@ export function QuickEntryTable({
                                 hasDisqualifyingGrade: !qs.hasDisqualifyingGrade,
                               })
                             }
-                            className={`inline-flex items-center justify-center px-2 py-1 rounded text-2xs font-semibold transition-all ${
+                            className={`inline-flex items-center justify-center px-4 py-2 min-h-[32px] rounded-lg text-xs font-semibold transition-all ${
                               qs.hasDisqualifyingGrade
                                 ? 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
                                 : 'bg-cream-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 border border-transparent'
@@ -103,10 +103,10 @@ export function QuickEntryTable({
                         {quickSemesters.length > 1 && (
                           <button
                             onClick={() => onRemove(qs.id)}
-                            className="text-red-500 hover:text-red-600 p-1 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all"
+                            className="text-red-500 hover:text-red-600 p-2 min-h-[44px] min-w-[44px] hover:bg-red-50 dark:hover:bg-red-950/20 rounded-md transition-all flex items-center justify-center"
                             aria-label="Remove semester"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-5 h-5" />
                           </button>
                         )}
                       </div>
@@ -135,7 +135,7 @@ export function QuickEntryTable({
                           gwa: val === '' ? '' : parseFloat(val),
                         });
                       }}
-                      className="input-field text-sm text-center tabular-nums w-full"
+                      className="input-field text-base sm:text-sm text-center tabular-nums w-full min-h-[44px] sm:min-h-0"
                       placeholder="GWA"
                     />
                   </td>
@@ -154,7 +154,7 @@ export function QuickEntryTable({
                           totalUnits: val === '' ? '' : parseInt(val) || '',
                         });
                       }}
-                      className="input-field text-sm text-center tabular-nums w-full"
+                      className="input-field text-base sm:text-sm text-center tabular-nums w-full min-h-[44px] sm:min-h-0"
                       placeholder="Units"
                     />
                   </td>
@@ -211,10 +211,10 @@ export function QuickEntryTable({
         <div className="border-t border-charcoal-100 dark:border-charcoal-700 px-3 py-2">
           <button
             onClick={onAdd}
-            className="btn-ghost text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 w-full justify-start"
+            className="btn-ghost text-sage-600 dark:text-sage-400 hover:text-sage-700 dark:hover:text-sage-300 w-full justify-start min-h-[44px]"
           >
-            <Plus className="w-4 h-4" />
-            Add semester
+            <Plus className="w-5 h-5 sm:w-4 sm:h-4" />
+            <span className="text-sm sm:text-base">Add semester</span>
           </button>
         </div>
       </div>

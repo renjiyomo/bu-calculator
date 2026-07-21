@@ -84,18 +84,18 @@ export function CumulativeCalculator() {
                 onClick={() =>
                   exportCumulativePDF(semesters, evaluation, rules, userName)
                 }
-                className="btn-secondary text-xs"
+                className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0 flex-1 sm:flex-none justify-center"
                 id="export-cumulative-pdf"
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 Export PDF
               </button>
               <button
                 onClick={handleClear}
-                className="btn-secondary text-xs"
+                className="btn-secondary text-sm sm:text-xs min-h-[44px] sm:min-h-0 flex-1 sm:flex-none justify-center"
                 id="clear-cumulative"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-4 h-4 sm:w-3.5 sm:h-3.5" />
                 Clear
               </button>
             </>
@@ -119,7 +119,6 @@ export function CumulativeCalculator() {
             <div className="text-left">
               <div className="leading-tight">Quick Entry</div>
               <div className={`text-2xs leading-tight mt-0.5 ${isQuickMode ? 'text-white/70' : 'text-charcoal-300 dark:text-charcoal-500'}`}>
-                Just enter GWA & units per semester
               </div>
             </div>
           </button>
@@ -136,7 +135,6 @@ export function CumulativeCalculator() {
             <div className="text-left">
               <div className="leading-tight">Detailed Entry</div>
               <div className={`text-2xs leading-tight mt-0.5 ${!isQuickMode ? 'text-white/70' : 'text-charcoal-300 dark:text-charcoal-500'}`}>
-                Enter every subject grade individually
               </div>
             </div>
           </button>
@@ -166,7 +164,7 @@ export function CumulativeCalculator() {
                 About NSTP Subjects
               </p>
               <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-                According to the BU Handbook, grades in the National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Note that Physical Education (PE / PATHFIT) <strong>is included</strong> in the GWA. Toggle the switch on for NSTP subjects to exclude them.
+                National Service Training Program (NSTP) are <strong>not included</strong> in the computation of your General Weighted Average (GWA). Toggle the button for NSTP subjects to exclude them.
               </p>
             </div>
           </div>
@@ -194,7 +192,7 @@ export function CumulativeCalculator() {
 
           <button
             onClick={addSemester}
-            className="btn-primary w-full sm:w-auto"
+            className="btn-primary w-full sm:w-auto min-h-[44px] sm:min-h-0 justify-center"
             id="add-semester-btn"
           >
             <Plus className="w-4 h-4" />
