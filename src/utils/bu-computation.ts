@@ -12,6 +12,7 @@ import type {
   Semester,
   QuickSemester,
   Grade,
+  NumericGrade,
   GWAResult,
   SemesterHonor,
   SemesterEvaluation,
@@ -76,7 +77,7 @@ export function isDisqualifyingGrade(grade: Grade, rules: HonorsRules): boolean 
 /**
  * Checks if a grade is numeric (can be used in GWA computation).
  */
-export function isNumericGrade(grade: Grade | ''): grade is number {
+export function isNumericGrade(grade: Grade | ''): grade is NumericGrade {
   return typeof grade === 'number';
 }
 

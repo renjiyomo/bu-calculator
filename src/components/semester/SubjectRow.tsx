@@ -3,7 +3,7 @@
 // A single subject input row with all fields
 // ========================================
 
-import { Trash2, Check, X } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import type { Subject, Grade, HonorsRules } from '../../types';
 import { GradeSelect } from '../shared/GradeSelect';
 import { isDisqualifyingGrade } from '../../utils/bu-computation';

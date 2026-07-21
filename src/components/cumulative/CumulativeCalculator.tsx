@@ -146,7 +146,7 @@ export function CumulativeCalculator() {
       </div>
 
       {/* Cumulative GWA Summary */}
-      <CumulativeSummary evaluation={evaluation} isQuickMode={isQuickMode} />
+      <CumulativeSummary evaluation={evaluation} />
 
       {/* Input Area — depends on mode */}
       {isQuickMode ? (

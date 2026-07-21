@@ -13,10 +13,9 @@ import { useState } from 'react';
 
 interface CumulativeSummaryProps {
   evaluation: LatinHonorsEvaluation;
-  isQuickMode: boolean;
 }
 
-export function CumulativeSummary({ evaluation, isQuickMode }: CumulativeSummaryProps) {
+export function CumulativeSummary({ evaluation }: CumulativeSummaryProps) {
   const { userName, setUserName } = useApp();
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { gwaResult, honor, honorLabel, semesterSummaries } = evaluation;

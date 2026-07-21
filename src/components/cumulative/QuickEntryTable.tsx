@@ -4,7 +4,7 @@
 // For students who already know their per-semester GWA
 // ========================================
 
-import { Plus, Trash2, Info, AlertTriangle, Check, X } from 'lucide-react';
+import { Plus, Trash2, Info, Check, X } from 'lucide-react';
 import type { QuickSemester } from '../../types';
 
 interface QuickEntryTableProps {
@@ -30,7 +30,7 @@ export function QuickEntryTable({
             Quick Entry Mode
           </p>
           <p className="text-xs text-sage-600 dark:text-sage-400 mt-1 leading-relaxed">
-            Enter your <strong>semester GWA</strong> and <strong>total academic units</strong> This is faster than entering every subject
+            Enter your <strong>semester GWA</strong> and <strong>total academic units</strong>. This is faster than entering every subject
             individually if you already know your GWA per semester.
           </p>
         </div>

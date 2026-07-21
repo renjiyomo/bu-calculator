@@ -81,7 +81,7 @@ export function ShareModal({
           <ShareableResultCard
             type={type}
             gwa={gwa}
-            honorLabel={honorLabel}
+            honorLabel={honorLabel ?? null}
             totalUnits={totalUnits}
             userName={userName}
             onNameChange={onNameChange}
