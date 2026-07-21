@@ -165,7 +165,7 @@ export function evaluateSemesterHonors(
     return {
       gwaResult,
       honor: 'disqualified',
-      honorLabel: 'Disqualified from Semester Honors',
+      honorLabel: 'Disqualified',
     };
   }
 
@@ -335,7 +335,7 @@ function classifyLatinHonors(
     return {
       gwaResult,
       honor: 'disqualified',
-      honorLabel: 'Disqualified from Latin Honors',
+      honorLabel: 'Disqualified',
       semesterSummaries,
     };
   }
