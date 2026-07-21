@@ -131,7 +131,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border border-charcoal-100 dark:border-charcoal-700 rounded-sm overflow-hidden">
+    <div className="border border-charcoal-100/50 dark:border-charcoal-700/50 rounded-2xl overflow-hidden shadow-sm">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-5 py-4 text-left bg-white dark:bg-charcoal-800 hover:bg-cream-50 dark:hover:bg-charcoal-750 transition-colors duration-150"
@@ -174,7 +174,7 @@ export function DownloadPage() {
       <div className="card border-forest-100 dark:border-forest-800">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
           {/* App Icon */}
-          <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-forest-50 dark:bg-forest-900/40 border border-forest-100 dark:border-forest-800 flex items-center justify-center">
+          <div className="flex-shrink-0 w-16 h-16 rounded-[20px] bg-forest-50 dark:bg-forest-900/40 border-0 flex items-center justify-center shadow-sm">
             <img
               src="/favicon/favicon.svg"
               alt="BUeño Calculator App Icon"
@@ -188,10 +188,10 @@ export function DownloadPage() {
               <h3 className="text-base font-bold text-charcoal-800 dark:text-charcoal-50">
                 BUeño Calculator
               </h3>
-              <span className="inline-flex items-center px-2 py-0.5 text-2xs font-semibold rounded-sm bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300 border border-sage-200 dark:border-sage-700">
+              <span className="inline-flex items-center px-2 py-0.5 text-2xs font-semibold rounded-full bg-sage-100 dark:bg-sage-900/40 text-sage-700 dark:text-sage-300 border border-sage-200 dark:border-sage-700">
                 v{APK_VERSION}
               </span>
-              <span className="inline-flex items-center px-2 py-0.5 text-2xs font-medium rounded-sm bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-500 dark:text-charcoal-400 border border-charcoal-200 dark:border-charcoal-600">
+              <span className="inline-flex items-center px-2 py-0.5 text-2xs font-medium rounded-full bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-500 dark:text-charcoal-400 border border-charcoal-200 dark:border-charcoal-600">
                 {APK_SIZE_MB}
               </span>
             </div>
@@ -230,7 +230,7 @@ export function DownloadPage() {
               <button
                 disabled
                 id="btn-download-apk-coming-soon"
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 text-sm font-medium rounded-sm cursor-not-allowed w-full sm:w-auto border border-charcoal-200 dark:border-charcoal-600"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-charcoal-100 dark:bg-charcoal-700 text-charcoal-400 dark:text-charcoal-500 text-sm font-medium rounded-full cursor-not-allowed w-full sm:w-auto border border-charcoal-200 dark:border-charcoal-600"
               >
                 <Download className="w-4 h-4" />
                 Coming Soon

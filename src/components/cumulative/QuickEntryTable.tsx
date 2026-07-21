@@ -70,14 +70,14 @@ export function QuickEntryTable({
               {quickSemesters.map((qs) => (
                 <tr
                   key={qs.id}
-                  className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-3.5 sm:p-0 mb-3 sm:mb-0 rounded-xl sm:rounded-none border border-charcoal-200 dark:border-charcoal-700/50 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-2xs sm:shadow-none gap-x-2 gap-y-1.5 sm:gap-0 ${
+                  className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-4 sm:p-0 mb-3 sm:mb-0 rounded-[16px] sm:rounded-none border-0 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-sm sm:shadow-none gap-x-3 gap-y-2 sm:gap-0 ${
                     qs.hasDisqualifyingGrade
                       ? 'row-disqualified'
                       : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/50'
                   }`}
                 >
                   {/* Semester name / Remove (Mobile Header) */}
-                  <td className="col-span-2 sm:table-cell px-0 sm:px-4 py-1 sm:py-3 flex flex-col sm:table-cell border-b border-charcoal-100 dark:border-charcoal-700/50 sm:border-0 pb-2 sm:pb-3">
+                  <td className="col-span-2 sm:table-cell px-0 sm:px-4 py-1 sm:py-3 flex flex-col sm:table-cell sm:border-0 pb-2 sm:pb-3">
                     <div className="flex justify-between items-center w-full mb-1.5 sm:hidden">
                       <span className="text-2xs font-semibold text-charcoal-400 dark:text-charcoal-500 uppercase tracking-wider">Semester</span>
                       

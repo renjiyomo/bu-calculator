@@ -61,7 +61,9 @@ export function SemesterAccordion({
     <div className="card p-0 overflow-hidden animate-slide-down">
       {/* Header */}
       <div
-        className="flex items-center gap-3 px-4 py-3 bg-cream-50 dark:bg-charcoal-700/50 border-b border-charcoal-100 dark:border-charcoal-600 cursor-pointer group"
+        className={`flex items-center gap-3 px-5 py-4 bg-charcoal-50/50 dark:bg-charcoal-700/30 cursor-pointer group transition-colors ${
+          semester.isCollapsed ? '' : 'border-b border-charcoal-100/50 dark:border-charcoal-600/50'
+        }`}
         onClick={() => !isEditing && onToggleCollapse()}
       >
         {/* Chevron */}

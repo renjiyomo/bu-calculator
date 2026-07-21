@@ -31,14 +31,14 @@ export function SubjectRow({
 
   return (
     <tr
-      className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-3.5 sm:p-0 mb-3 sm:mb-0 rounded-xl sm:rounded-none border border-charcoal-200 dark:border-charcoal-700/50 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-2xs sm:shadow-none gap-x-2 gap-y-1.5 sm:gap-0 ${
+      className={`group transition-colors duration-150 grid grid-cols-2 sm:table-row p-4 sm:p-0 mb-3 sm:mb-0 rounded-[16px] sm:rounded-none border-0 sm:border-0 bg-white dark:bg-charcoal-800/40 sm:bg-transparent shadow-sm sm:shadow-none gap-x-3 gap-y-2 sm:gap-0 ${
         isDisqualified
           ? 'row-disqualified'
           : 'hover:bg-cream-100 dark:hover:bg-charcoal-700/50'
       } ${subject.isNstp ? 'opacity-60' : ''}`}
     >
       {/* Row Header / Delete (Mobile) or Row Number (Desktop) */}
-      <td className="col-span-2 sm:table-cell px-0 sm:px-3 py-1 sm:py-2.5 flex sm:table-cell justify-between items-center sm:text-center w-full sm:w-10 border-b border-charcoal-100 dark:border-charcoal-700/50 sm:border-0 pb-2 sm:pb-2.5">
+      <td className="col-span-2 sm:table-cell px-0 sm:px-3 py-1 sm:py-2.5 flex sm:table-cell justify-between items-center sm:text-center w-full sm:w-10 sm:border-0 pb-2 sm:pb-2.5">
         <span className="sm:hidden text-xs font-mono font-bold text-charcoal-500 dark:text-charcoal-400">Subject #{index + 1}</span>
         
         {/* Mobile controls: Exclude NSTP toggle + Delete Button */}
