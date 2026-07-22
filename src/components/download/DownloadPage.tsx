@@ -3,7 +3,7 @@
 // Android APK download & installation guide
 // ========================================
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import {
   Download,
