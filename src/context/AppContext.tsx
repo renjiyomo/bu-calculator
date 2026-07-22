@@ -43,6 +43,7 @@ interface AppContextValue {
   activeView: View;
   setActiveView: (view: View) => void;
   isPWA: boolean;
+  installedApkVersion: string | null;
 
   // User Profile
   userName: string;
@@ -108,6 +109,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [rules, setRulesState] = useState<HonorsRules>(() => loadRules());
   const [userName, setUserNameState] = useState<string>(() => loadUserName());
   const isPWA = useIsPWA();
+  const [installedApkVersion, setInstalledApkVersion] = useState<string | null>(() => {
+    return sessionStorage.getItem('bueno_installed_apk_version');
+  });
 
   // ---- APK Version Tracker ----
   // When the Android app is launched, it opens with ?apkVersion=x.x.x
@@ -116,8 +120,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const apkVersion = params.get('apkVersion');
     if (apkVersion) {
       sessionStorage.setItem('bueno_installed_apk_version', apkVersion);
+      setInstalledApkVersion(apkVersion);
       // Clean up the URL so it doesn't stay in the address bar
       window.history.replaceState({}, document.title, window.location.pathname);
+    } else {
+      // Clear out any old localStorage ghosts just to be safe
+      localStorage.removeItem('bueno_installed_apk_version');
+      localStorage.removeItem('bueno_last_apk_version');
     }
   }, []);
 
@@ -340,6 +349,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         activeView,
         setActiveView,
         isPWA,
+        installedApkVersion,
         userName,
         setUserName,
         semesterSubjects,

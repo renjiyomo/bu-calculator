@@ -172,31 +172,15 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 
 // ── Main Component ───────────────────────────────────────────────────────────
 export function DownloadPage() {
-  const { isPWA } = useApp();
+  const { isPWA, installedApkVersion } = useApp();
   
-  // Track the downloaded version in localStorage
-  const [lastDownloadedVersion, setLastDownloadedVersion] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Check both sessionStorage (new method) and fallback to clean up old localStorage
-    const saved = sessionStorage.getItem('bueno_installed_apk_version');
-    if (saved) {
-      setLastDownloadedVersion(saved);
-    } else {
-      // If we are on an old version that doesn't set sessionStorage, make sure we aren't
-      // tricked by a stale localStorage value from a previous installation.
-      localStorage.removeItem('bueno_installed_apk_version');
-      localStorage.removeItem('bueno_last_apk_version');
-    }
-  }, []);
-
   const handleDownloadClick = () => {
     // We do NOT update localStorage here anymore.
     // localStorage is ONLY updated automatically when the new APK opens and passes ?apkVersion=x.x.x
     // See AppContext.tsx for that logic!
   };
 
-  const isUpdateAvailable = lastDownloadedVersion !== APK_VERSION;
+  const isUpdateAvailable = installedApkVersion !== APK_VERSION;
 
   return (
     <div className="space-y-8 animate-fade-in">
