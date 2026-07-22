@@ -402,7 +402,7 @@ export function createEmptySemester(name: string): Semester {
   return {
     id: crypto.randomUUID(),
     name,
-    subjects: [createEmptySubject()],
+    subjects: [createEmptySubject(), createEmptySubject()],
     isCollapsed: false,
   };
 }
