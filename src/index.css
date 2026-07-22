@@ -85,7 +85,7 @@
 @layer components {
   /* Card component */
   .card {
-    @apply bg-white border border-charcoal-100/50 sm:border-charcoal-100 rounded-[20px] p-5 sm:p-6 shadow-[0_2px_20px_rgba(0,0,0,0.03)] sm:shadow-sm transition-all duration-200;
+    @apply bg-white border border-charcoal-100/50 sm:border-charcoal-100 rounded-[16px] p-5 sm:p-6 shadow-[0_2px_20px_rgba(0,0,0,0.03)] sm:shadow-sm transition-all duration-200;
   }
   .dark .card {
     @apply bg-charcoal-800 border-0 shadow-none;
