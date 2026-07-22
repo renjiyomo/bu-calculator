@@ -132,7 +132,7 @@ export function QuickEntryTable({
                       onChange={(e) => {
                         const val = e.target.value;
                         onUpdate(qs.id, {
-                          gwa: val === '' ? '' : parseFloat(val),
+                          gwa: val === '' || isNaN(parseFloat(val)) ? '' : parseFloat(val),
                         });
                       }}
                       className="input-field text-base sm:text-sm text-center tabular-nums w-full min-h-[44px] sm:min-h-0"
@@ -151,8 +151,13 @@ export function QuickEntryTable({
                       onChange={(e) => {
                         const val = e.target.value;
                         onUpdate(qs.id, {
-                          totalUnits: val === '' ? '' : parseInt(val) || '',
+                          totalUnits: val === '' || isNaN(parseInt(val)) ? '' : parseInt(val),
                         });
+                      }}
+                      onBlur={() => {
+                        if (qs.totalUnits === '') {
+                          onUpdate(qs.id, { totalUnits: 1 });
+                        }
                       }}
                       className="input-field text-base sm:text-sm text-center tabular-nums w-full min-h-[44px] sm:min-h-0"
                       placeholder="Units"

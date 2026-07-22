@@ -79,10 +79,16 @@ export function SubjectRow({
           type="number"
           min={1}
           max={12}
-          value={subject.units}
-          onChange={(e) =>
-            onUpdate({ units: Math.max(1, parseInt(e.target.value) || 1) })
-          }
+          value={subject.units === 0 ? '' : subject.units}
+          onChange={(e) => {
+            const val = e.target.value;
+            onUpdate({ units: val === '' ? 0 : parseInt(val) || 0 });
+          }}
+          onBlur={() => {
+            if (subject.units === 0) {
+              onUpdate({ units: 1 });
+            }
+          }}
           className="input-field text-base sm:text-sm text-center w-full min-h-[44px] sm:min-h-0"
           id={`units-${subject.id}`}
         />
